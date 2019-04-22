@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main Game", "Main Game", "{F2EBDBF2-9BB9-4591-8AD6-B1BCF486F53E}"
+	ProjectSection(SolutionItems) = preProject
+		game.js = game.js
+		index.html = index.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper Classes", "Helper Classes", "{952017BC-B4C6-4DF0-8808-EEFEEE351F10}"
+	ProjectSection(SolutionItems) = preProject
+		Counter.js = Counter.js
+		DepthManager.js = DepthManager.js
+		LevelMaker.js = LevelMaker.js
+		Playfield.js = Playfield.js
+		vector.js = vector.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base Classes", "Base Classes", "{BEEE9FD1-9A75-4459-9A26-38213EC45FBB}"
+	ProjectSection(SolutionItems) = preProject
+		BaseScene.js = BaseScene.js
+		BaseTile.js = BaseTile.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiles", "Tiles", "{283D78C5-562D-44DF-BAE4-8C4FBC385B10}"
+	ProjectSection(SolutionItems) = preProject
+		WaterTile.js = WaterTile.js
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E2580FE-9523-46AF-A071-4423D33904E2}
+	EndGlobalSection
+EndGlobal
