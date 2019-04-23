@@ -31,48 +31,56 @@
  <objectgroup id="6" name="units">
   <object id="1" name="archer" x="96" y="128">
    <properties>
+    <property name="looking_left" type="bool" value="false"/>
     <property name="team" value="player"/>
    </properties>
    <polygon points="0,0 16,0 16,16 0,16"/>
   </object>
   <object id="2" name="archer" x="96" y="160">
    <properties>
+    <property name="looking_left" type="bool" value="false"/>
     <property name="team" value="player"/>
    </properties>
    <polygon points="0,0 16,0 16,16 0,16"/>
   </object>
   <object id="4" name="knight" x="112" y="160">
    <properties>
+    <property name="looking_left" type="bool" value="false"/>
     <property name="team" value="player"/>
    </properties>
    <polygon points="0,0 16,0 16,16 0,16"/>
   </object>
   <object id="5" name="knight" x="112" y="128">
    <properties>
+    <property name="looking_left" type="bool" value="false"/>
     <property name="team" value="player"/>
    </properties>
    <polygon points="0,0 16,0 16,16 0,16"/>
   </object>
-  <object id="6" name="skeleton" x="176" y="128">
+  <object id="6" name="skeleton" x="192" y="144">
    <properties>
+    <property name="looking_left" type="bool" value="true"/>
     <property name="team" value="enemy"/>
    </properties>
    <polygon points="0,0 16,0 16,16 0,16"/>
   </object>
-  <object id="9" name="skeleton" x="176" y="160">
+  <object id="9" name="skeleton" x="176" y="128">
    <properties>
+    <property name="looking_left" type="bool" value="true"/>
     <property name="team" value="enemy"/>
    </properties>
    <polygon points="0,0 16,0 16,16 0,16"/>
   </object>
   <object id="10" name="skeleton" x="208" y="160">
    <properties>
+    <property name="looking_left" type="bool" value="true"/>
     <property name="team" value="enemy"/>
    </properties>
    <polygon points="0,0 16,0 16,16 0,16"/>
   </object>
   <object id="11" name="skeleton" x="208" y="128">
    <properties>
+    <property name="looking_left" type="bool" value="true"/>
     <property name="team" value="enemy"/>
    </properties>
    <polygon points="0,0 16,0 16,16 0,16"/>

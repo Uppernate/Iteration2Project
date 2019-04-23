@@ -5,19 +5,27 @@ class LevelMaker {
     make(map) {
         // Get layers and specifically find the terrain layer
         const layers = map.layers;
-        const terrain = layers.find(function (l) { return l.name === 'terrain' });
+        const objLayers = map.objects;
+        const terrain = layers.find(findWithProperty, { name: 'name', value: 'terrain' });
+        const units = objLayers.find(findWithProperty, { name: 'name', value: 'units' });
         // Loop through the columns and rows of every tile on the map
-        terrain.data.forEach(function (entry) {
-            entry.forEach(this.onTerrainTile, this);
-        }, this);
+        terrain.data.forEach(doubleForEach, { func: this.onTerrainTile, scope: this });
+        // Loop through all units in the game
+        units.objects.forEach(this.onUnit, this);
     }
     onTerrainTile(tile) {
         // Only run code if tile exists
-        if (tile.index !== -1 && tile.index != 5) {
-            game.scene.keys.default.playfield.add.tile(tile);
+        if (tile.index == -1) return;
+        switch (tile.index) {
+            case 5:
+                game.scene.keys.default.playfield.add.water(tile);
+                break;
+            default:
+                game.scene.keys.default.playfield.add.tile(tile);
+                break;
         }
-        if (tile.index == 5) {
-            game.scene.keys.default.playfield.add.water(tile);
-        }
+    }
+    onUnit(unit) {
+        game.scene.keys.default.playfield.add.unit(unit);
     }
 }

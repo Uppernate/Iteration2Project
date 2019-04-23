@@ -5,7 +5,7 @@ class DepthManager {
         this.order = {
             tile: 0,
             tileOverlay: 0.2,
-            unit: 0.3
+            unit: 64
         }
     }
     get(type, y) {

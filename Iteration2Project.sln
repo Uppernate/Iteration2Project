@@ -11,22 +11,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main Game", "Main Game", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper Classes", "Helper Classes", "{952017BC-B4C6-4DF0-8808-EEFEEE351F10}"
 	ProjectSection(SolutionItems) = preProject
+		AnimationManager.js = AnimationManager.js
+		ArrayFunctions.js = ArrayFunctions.js
 		Counter.js = Counter.js
 		DepthManager.js = DepthManager.js
 		LevelMaker.js = LevelMaker.js
 		Playfield.js = Playfield.js
+		TouchManager.js = TouchManager.js
 		vector.js = vector.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base Classes", "Base Classes", "{BEEE9FD1-9A75-4459-9A26-38213EC45FBB}"
 	ProjectSection(SolutionItems) = preProject
+		BaseContext.js = BaseContext.js
 		BaseScene.js = BaseScene.js
 		BaseTile.js = BaseTile.js
+		BaseUnit.js = BaseUnit.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiles", "Tiles", "{283D78C5-562D-44DF-BAE4-8C4FBC385B10}"
 	ProjectSection(SolutionItems) = preProject
 		WaterTile.js = WaterTile.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Touch Contexts", "Touch Contexts", "{4260BD90-820D-4220-8E33-82D7465562C1}"
+	ProjectSection(SolutionItems) = preProject
+		ContextNone.js = ContextNone.js
 	EndProjectSection
 EndProject
 Global

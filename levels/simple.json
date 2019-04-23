@@ -41,6 +41,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"looking_left",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"team",
                          "type":"string",
                          "value":"player"
@@ -74,6 +79,11 @@
                          "y":16
                         }],
                  "properties":[
+                        {
+                         "name":"looking_left",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"team",
                          "type":"string",
@@ -109,6 +119,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"looking_left",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"team",
                          "type":"string",
                          "value":"player"
@@ -142,6 +157,11 @@
                          "y":16
                         }],
                  "properties":[
+                        {
+                         "name":"looking_left",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"team",
                          "type":"string",
@@ -177,6 +197,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"looking_left",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"team",
                          "type":"string",
                          "value":"enemy"
@@ -185,8 +210,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":176,
-                 "y":128
+                 "x":192,
+                 "y":144
                 }, 
                 {
                  "height":0,
@@ -211,6 +236,11 @@
                         }],
                  "properties":[
                         {
+                         "name":"looking_left",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"team",
                          "type":"string",
                          "value":"enemy"
@@ -220,7 +250,7 @@
                  "visible":true,
                  "width":0,
                  "x":176,
-                 "y":160
+                 "y":128
                 }, 
                 {
                  "height":0,
@@ -244,6 +274,11 @@
                          "y":16
                         }],
                  "properties":[
+                        {
+                         "name":"looking_left",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"team",
                          "type":"string",
@@ -278,6 +313,11 @@
                          "y":16
                         }],
                  "properties":[
+                        {
+                         "name":"looking_left",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"team",
                          "type":"string",
