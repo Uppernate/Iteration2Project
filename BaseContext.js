@@ -1,15 +1,24 @@
 // JavaScript source code
 class BaseContext {
     constructor() {
-        this.event = new Phaser.Events.EventEmitter();
-        game.scene.keys.default.touchManager.event.on('press', this.press, this);
+        this.events = [];
+
+        this.selection = game.scene.keys.default.physics.add.sprite(0, 0, 'select');
+        this.selection.depth = depth.get('tileOverlay', 0);
+        this.selection.alpha = 0;
     }
     press(touch) {
         console.log('Base Context said press!');
-        this.getTileByTouch(touch);
     }
     destroy() {
-        game.scene.keys.default.touchManager.event.off('press', this.press, this);
+        this.selection.destroy();
+        this.events.forEach(function (e) {
+            game.scene.keys.default.touchManager.event.off(e.name, e.func, e.context);
+        }, this);
+    }
+    listen(name, func, context) {
+        game.scene.keys.default.touchManager.event.on(name, func, context);
+        this.events.push({ name: name, func: func, context: context });
     }
     getTileByTouch(touch) {
         const tilePos = new Vector2(touch);
@@ -57,7 +66,20 @@ class BaseContext {
         if (frontTile && frontTile.unit)
             tile = frontTile;
 
-        // Debug selection
-        if (tile) tile.frame = 5;
+        return tile;
+    }
+    displaySelectionAtTile(tile) {
+        if (tile && tile.selectable) {
+            this.selection.alpha = 1;
+            this.selection.x = tile.sprite.x;
+            this.selection.y = tile.sprite.y - 8;
+            this.selection.depth = depth.get('tileOverlay', this.selection.y);
+            this.selection.play(game.scene.keys.default.animationManager.getUIAnim('select'));
+        }
+    }
+    moveScreen(touch) {
+        game.scene.keys.default.camerafocus.sub(touch.swipeVector.div(game.scene.keys.default.cameras.main.zoom));
+        touch.startPosition.set(touch.position);
+        touch.swipeVector.set(0, 0);
     }
 }

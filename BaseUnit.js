@@ -11,7 +11,12 @@ class BaseUnit {
         this.queue = [];
         this.sprite = game.scene.keys.default.physics.add.sprite(this.position.x, this.position.y, 'unit');
         this.sprite.depth = depth.get('unit', this.y);
-        this.sprite.anims.play(this.getAnimation('idle'), false, this.getRandomFrame('idle'));
+    }
+    idle(start) {
+        if (start)
+            this.sprite.anims.play(this.getAnimation('idle'), false, this.getRandomFrame('idle'));
+        else
+            this.sprite.anims.play(this.getAnimation('idle'));
     }
     getRandomFrame(name) {
         return Math.floor(Math.random() * this.getAnimation(name).frames.length);

@@ -17,6 +17,10 @@ var config = {
         height: '100%'
     },
 
+    plugins: {
+        global: [NineSlice.Plugin.DefaultCfg],
+    },
+
     physics: {
         default: 'arcade'
     },

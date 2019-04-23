@@ -6,6 +6,7 @@ class BaseTile {
         this._z = 0;
         this.walkable = true;
         this.blocksSight = false;
+        this.selectable = true;
         this.sprite = game.scene.keys.default.physics.add.sprite(this.position.x, this.position.y, 'terrain');
     }
     // Coordinate getters/setters as shortcuts for position property

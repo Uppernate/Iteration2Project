@@ -8,6 +8,7 @@ class Scene extends Phaser.Scene {
         this.playfield = new Playfield();
         this.animationManager = new AnimationManager();
         this.touchManager = new TouchManager();
+        this.UIManager = new UIManager();
 
         // Objects
         this.event = new Phaser.Events.EventEmitter();
@@ -23,9 +24,17 @@ class Scene extends Phaser.Scene {
         this.load.tilemapTiledJSON("tilemap", "levels/simple.json");
 
         this.load.spritesheet("terrain", "img/terrain.png", { frameWidth: 30, frameHeight: 32, margin: 1, spacing: 2 });
+
         this.load.spritesheet("unit", "img/unit.png", { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("select", "img/select.png", { frameWidth: 30, frameHeight: 16 });
+
         this.load.spritesheet("unit-archer-idle", "img/unit-archer-idle.png", { frameWidth: 32, frameHeight: 32 });
+        this.load.image("unit-archer-icon", "img/unit-archer-icon.png");
+
+        this.load.spritesheet("unit-knight-idle", "img/unit-knight-idle.png", { frameWidth: 32, frameHeight: 32 });
+        this.load.image("unit-knight-icon", "img/unit-knight-icon.png");
+        this.load.image("ui-window", "img/window.png");
+        this.load.image("ui-unit-window", "img/unit-window.png");
     }
     create() {
         this.map = this.make.tilemap({ key: "tilemap" });
@@ -33,6 +42,7 @@ class Scene extends Phaser.Scene {
         this.touchManager.make();
         this.animationManager.make();
         this.level.make(this.map);
+        this.UIManager.make();
 
         this.scale.on('resize', this.resize, this);
 
@@ -41,12 +51,11 @@ class Scene extends Phaser.Scene {
         this.windowsize.set(this.game.canvas.width / pixelSize, this.game.canvas.height / pixelSize);
         this.pixelsize = pixelSize;
         this.cameras.main.zoom = pixelSize;
+        this.event.emit('resize');
     }
     update(time, delta) {
-
-        // Camera
-        this.cameras.main.centerOn(Math.round(this.camerafocus.x), Math.round(this.camerafocus.y));
         this.event.emit('update', time);
+        this.cameras.main.centerOn(Math.round(this.camerafocus.x), Math.round(this.camerafocus.y));
     }
     resize(gameSize, baseSize, displaySize, resolution) {
         const width = displaySize.width;
@@ -58,5 +67,6 @@ class Scene extends Phaser.Scene {
         this.windowsize.set(width / pixelSize, height / pixelSize);
         this.pixelsize = pixelSize;
         this.cameras.main.zoom = pixelSize;
+        this.event.emit('resize');
     }
 }

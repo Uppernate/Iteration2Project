@@ -21,16 +21,35 @@ class Playfield {
                 self.tiles.push(playTile);
             },
             unit: function(unit) {
-                const playUnit = new BaseUnit();
-                playUnit.x = unit.x - unit.y;
-                playUnit.y = unit.y / 2 + unit.x / 2 - 2;
-                const tile = self.get.tile.at(unit.x / 16 + 1, unit.y / 16 + 1);
-                playUnit.tile = tile;
-                tile.unit = playUnit;
+                let playUnit;
                 const left = unit.properties.find(findWithProperty, { name: 'name', value: 'looking_left' });
-                if (left && left.value == true)
-                    playUnit.sprite.setScale(-1, 1);
-                self.units.push(playUnit);
+                const team = unit.properties.find(findWithProperty, { name: 'name', value: 'team' });
+                const name = unit.name;
+                const tile = self.get.tile.at(unit.x / 16 + 1, unit.y / 16 + 1);
+
+                switch (name) {
+                    case 'archer':
+                        playUnit = new UnitArcher();
+                        break;
+                    case 'knight':
+                        playUnit = new UnitKnight();
+                }
+
+                if (team && team.value === 'player') {
+                    game.scene.keys.default.UIManager.addUnit(playUnit);
+                }
+
+                if (playUnit) {
+                    playUnit.x = unit.x - unit.y;
+                    playUnit.y = unit.y / 2 + unit.x / 2 - 2;
+                    playUnit.tile = tile;
+                    tile.unit = playUnit;
+
+                    if (left && left.value == true)
+                        playUnit.sprite.setScale(-1, 1);
+
+                    self.units.push(playUnit);
+                }
             }
         };
         this.get = {
