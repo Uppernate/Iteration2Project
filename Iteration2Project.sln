@@ -11,13 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main Game", "Main Game", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper Classes", "Helper Classes", "{952017BC-B4C6-4DF0-8808-EEFEEE351F10}"
 	ProjectSection(SolutionItems) = preProject
-		AnimationManager.js = AnimationManager.js
 		ArrayFunctions.js = ArrayFunctions.js
 		Counter.js = Counter.js
-		DepthManager.js = DepthManager.js
-		LevelMaker.js = LevelMaker.js
-		Playfield.js = Playfield.js
-		TouchManager.js = TouchManager.js
 		vector.js = vector.js
 	EndProjectSection
 EndProject
@@ -37,6 +32,22 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Touch Contexts", "Touch Contexts", "{4260BD90-820D-4220-8E33-82D7465562C1}"
 	ProjectSection(SolutionItems) = preProject
 		ContextNone.js = ContextNone.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Units", "Units", "{05A39E81-9D85-4527-A6F1-21E707C00A81}"
+	ProjectSection(SolutionItems) = preProject
+		UnitArcher.js = UnitArcher.js
+		UnitKnight.js = UnitKnight.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Managers", "Managers", "{002EB9EC-1B3C-4472-8373-516D8128ADFA}"
+	ProjectSection(SolutionItems) = preProject
+		AnimationManager.js = AnimationManager.js
+		DepthManager.js = DepthManager.js
+		LevelMaker.js = LevelMaker.js
+		Playfield.js = Playfield.js
+		TouchManager.js = TouchManager.js
+		UIManager.js = UIManager.js
 	EndProjectSection
 EndProject
 Global
