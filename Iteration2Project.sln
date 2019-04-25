@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper Classes", "Helper Cl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base Classes", "Base Classes", "{BEEE9FD1-9A75-4459-9A26-38213EC45FBB}"
 	ProjectSection(SolutionItems) = preProject
+		BaseAction.js = BaseAction.js
+		BaseActionUI.js = BaseActionUI.js
 		BaseContext.js = BaseContext.js
 		BaseScene.js = BaseScene.js
 		BaseTile.js = BaseTile.js
@@ -38,6 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Units", "Units", "{05A39E81
 	ProjectSection(SolutionItems) = preProject
 		UnitArcher.js = UnitArcher.js
 		UnitKnight.js = UnitKnight.js
+		UnitSkeleton.js = UnitSkeleton.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Managers", "Managers", "{002EB9EC-1B3C-4472-8373-516D8128ADFA}"
@@ -49,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Managers", "Managers", "{00
 		TouchManager.js = TouchManager.js
 		UIManager.js = UIManager.js
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actions", "Actions", "{85B2E303-D06A-4098-8905-BDD5F9CE149F}"
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution

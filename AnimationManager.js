@@ -19,6 +19,9 @@ class AnimationManager {
             },
             knight: {
                 idle: new AnimationBlueprint('unit-knight-idle', 6, false, -1)
+            },
+            skeleton: {
+                idle: new AnimationBlueprint('unit-skeleton-idle', 6, false, -1)
             }
         };
         this.ui = {

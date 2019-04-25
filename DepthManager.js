@@ -7,7 +7,8 @@ class DepthManager {
             tileOverlay: 42,
             unit: 64,
             ui: 10000,
-            uiIcon: 12000
+            uiIcon: 12000,
+            uiAction: 11000
         }
     }
     get(type, y) {

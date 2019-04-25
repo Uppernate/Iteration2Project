@@ -20,6 +20,14 @@ class BaseContext {
         game.scene.keys.default.touchManager.event.on(name, func, context);
         this.events.push({ name: name, func: func, context: context });
     }
+    getScreenPositionByTouch(touch) {
+        const tilePos = new Vector2(touch);
+        const scene = game.scene.keys.default;
+        // Convert Touch Position to real world coordinates
+        tilePos.div(scene.cameras.main.zoom);
+        tilePos.sub(scene.windowsize.copy().div(2));
+        return tilePos;
+    }
     getTileByTouch(touch) {
         const tilePos = new Vector2(touch);
         const scene = game.scene.keys.default;

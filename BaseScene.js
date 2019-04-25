@@ -33,8 +33,14 @@ class Scene extends Phaser.Scene {
 
         this.load.spritesheet("unit-knight-idle", "img/unit-knight-idle.png", { frameWidth: 32, frameHeight: 32 });
         this.load.image("unit-knight-icon", "img/unit-knight-icon.png");
+
+        this.load.spritesheet("unit-skeleton-idle", "img/unit-skeleton-idle.png", { frameWidth: 32, frameHeight: 32 });
+
         this.load.image("ui-window", "img/window.png");
         this.load.image("ui-unit-window", "img/unit-window.png");
+
+
+        this.load.image("action-no-icon", "img/action-arrowshoot.png");
     }
     create() {
         this.map = this.make.tilemap({ key: "tilemap" });

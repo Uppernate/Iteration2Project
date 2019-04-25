@@ -4,6 +4,7 @@ class Playfield {
     constructor() {
         this.tiles = [];
         this.units = [];
+        this.secondsPerTurn = 2;
         let self = this;
         this.add = {
             tile: function (tile) {
@@ -33,6 +34,10 @@ class Playfield {
                         break;
                     case 'knight':
                         playUnit = new UnitKnight();
+                        break;
+                    case 'skeleton':
+                        playUnit = new UnitSkeleton();
+                        break;
                 }
 
                 if (team && team.value === 'player') {
