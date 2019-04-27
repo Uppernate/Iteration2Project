@@ -25,7 +25,8 @@ class AnimationManager {
             }
         };
         this.ui = {
-            select: new AnimationBlueprint('select', 24, false, 0, {end: 5})
+            select: new AnimationBlueprint('select', 24, false, 0, {end: 5}),
+            select_move: new AnimationBlueprint('select-move', 24, false, 0, {end: 5})
         }
     }
     make() {

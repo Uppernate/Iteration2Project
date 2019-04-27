@@ -2,7 +2,7 @@
 class BaseUnit {
     constructor() {
         this.health = new Counter(0, 1, 1);
-        this.stamina = new Counter(0, 1, 1);
+        this.stamina = new Counter(0, 5, 5);
         this.position = new Vector2(0, 0);
         this.name = 'archer';
         this._z = 0;
@@ -11,6 +11,13 @@ class BaseUnit {
         this.queue = [];
         this.sprite = game.scene.keys.default.physics.add.sprite(this.position.x, this.position.y, 'unit');
         this.sprite.depth = depth.get('unit', this.y);
+    }
+    get timeleft() {
+        let seconds = game.scene.keys.default.playfield.secondsPerTurn;
+        this.queue.forEach(function (a) {
+            seconds -= a.finalDuration;
+        });
+        return seconds;
     }
     idle(start) {
         if (start)

@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base Classes", "Base Classe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiles", "Tiles", "{283D78C5-562D-44DF-BAE4-8C4FBC385B10}"
 	ProjectSection(SolutionItems) = preProject
+		ReferenceTile.js = ReferenceTile.js
 		WaterTile.js = WaterTile.js
 	EndProjectSection
 EndProject
@@ -54,6 +55,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Managers", "Managers", "{00
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actions", "Actions", "{85B2E303-D06A-4098-8905-BDD5F9CE149F}"
+	ProjectSection(SolutionItems) = preProject
+		DashAction.js = DashAction.js
+		MoveAction.js = MoveAction.js
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution

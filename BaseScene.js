@@ -27,6 +27,7 @@ class Scene extends Phaser.Scene {
 
         this.load.spritesheet("unit", "img/unit.png", { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("select", "img/select.png", { frameWidth: 30, frameHeight: 16 });
+        this.load.spritesheet("select-move", "img/select-move.png", { frameWidth: 30, frameHeight: 16 });
 
         this.load.spritesheet("unit-archer-idle", "img/unit-archer-idle.png", { frameWidth: 32, frameHeight: 32 });
         this.load.image("unit-archer-icon", "img/unit-archer-icon.png");
@@ -39,8 +40,9 @@ class Scene extends Phaser.Scene {
         this.load.image("ui-window", "img/window.png");
         this.load.image("ui-unit-window", "img/unit-window.png");
 
-
-        this.load.image("action-no-icon", "img/action-arrowshoot.png");
+        this.load.image("action-no-icon", "img/action-no-icon.png");
+        this.load.image("action-move", "img/action-move.png");
+        this.load.image("action-dash", "img/action-dash.png");
     }
     create() {
         this.map = this.make.tilemap({ key: "tilemap" });

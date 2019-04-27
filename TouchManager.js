@@ -69,6 +69,7 @@ class TouchManager {
             this.event.emit('holding', touch);
         }
         else if (touch.swipeVector.magnitude > 4) {
+            if (touch.type !== 'swipe') this.event.emit('swipestart', touch);
             touch.type = "swipe";
             this.event.emit('swiping', touch);
         }
@@ -82,10 +83,7 @@ class TouchManager {
             case 'none':
                 this.state = new ContextNone(this);
                 break;
-            case 'unit':
-                this.state = new ContextOnUnit(this);
-                break;
-            case 'select_tiles':
+            case 'select-tiles':
                 this.state = new ContextSelectTiles(this);
                 break;
             case 'advancing':

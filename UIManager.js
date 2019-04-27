@@ -104,6 +104,8 @@ class UIManager {
             actionTab.x = pos.x - size.x * 0.25 + 4;
             actionTab.y = pos.y + size.y * 0.22 + 4 + offset;
             offset += 20;
+            actionTab.sprite.setInteractive();
+            actionTab.sprite.on('pointerdown', action.clicked, action);
         }, this);
     }
     hideActions() {
