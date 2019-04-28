@@ -11,6 +11,14 @@ class BaseAction {
     clicked() {
         console.log('base action does nothing! Override it!');
     }
+    makePathFrom(reference) {
+        const path = [];
+        while (reference) {
+            path.push(reference.original);
+            reference = reference.parent;
+        }
+        return path;
+    }
     selectTilesByMove() {
         const tile = this.unit.tile;
         // Create the first reference
@@ -74,11 +82,15 @@ class BaseAction {
         // Remove the tile unit is standing on
         tiles.splice(tiles.findIndex(a => a === this.unit.tile, this), 1);
         // Display a temporary graphic over the selected tile for debugging
+        /*
         tiles.forEach(function (tile) {
             const sprite = game.scene.keys.default.physics.add.sprite(tile.sprite.x, tile.sprite.y - 8, 'select-move');
             sprite.depth = depth.get('tileOverlay', sprite.y);
             sprite.play(game.scene.keys.default.animationManager.getUIAnim('select_move'));
         }, this);
+        */
+
+        this.latestChecked = checked;
 
         return tiles;
     }

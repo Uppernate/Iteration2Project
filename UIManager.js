@@ -3,16 +3,21 @@ class UIManager {
     constructor() {
         this.units = [];
         this.actions = [];
+        this.queue = [];
+        this.queueBars = [];
     }
     make() {
         // Create the Nine Slice objects for the Unit section and the Actions section
         this.window = game.scene.keys.default.add.nineslice(0, 100, 100, 100, 'ui-window', 4, 4);
         this.unitWindow = game.scene.keys.default.add.nineslice(0, 100, 100, 100, 'ui-unit-window', [0, 4, 9, 23]);
+        this.queueWindow = game.scene.keys.default.add.nineslice(0, 100, 100, 100, 'ui-window', 4, 4);
         // Set correct depth and make slightly transparent
         this.window.depth = depth.get('ui', 0);
         this.window.alpha = 0.5;
         this.unitWindow.depth = depth.get('ui', 0);
         this.unitWindow.alpha = 0.5;
+        this.queueWindow.depth = depth.get('ui', 1);
+        this.queueWindow.alpha = 0.5;
 
         // ALso listen to scene's events when they happen for UI Manager's other functions
         game.scene.keys.default.event.on('update', this.update, this);
@@ -28,6 +33,20 @@ class UIManager {
     update() {
         this.units.forEach(this.iconUpdate, this);
         this.reposition();
+    }
+    refreshQueue() {
+        this.deleteQueue();
+        this.queue.forEach(function (action) {
+            const bar = new BaseQueueBar(action);
+            this.queueBars.push(bar);
+        }, this);
+    }
+    deleteQueue() {
+        while (this.queueBars.length > 0) {
+            const bar = this.queueBars[0];
+            bar.destroy();
+            this.queueBars.splice(0, 1);
+        }
     }
     reposition() {
         this.barSize.set(this.windowsize).mul(0.75, 0.28);
@@ -51,6 +70,7 @@ class UIManager {
         // This is how you change the size of Nine Sliced objetcs
         this.window.resize(this.barSize.x, this.barSize.y);
         this.unitWindow.resize(this.windowsize.x - this.barSize.x, this.barSize.y);
+        this.queueWindow.resize(this.barSize.x - 8, 20);
 
         // Note: The top left is the origin of nine sliced objects
         this.window.x = this.barPosition.x;
@@ -59,6 +79,9 @@ class UIManager {
         this.unitWindow.x = pos.x - this.windowsize.x * 0.5;
         this.unitWindow.y = this.barPosition.y;
 
+        this.queueWindow.x = this.barPosition.x + 4;
+        this.queueWindow.y = this.barPosition.y + 4; 
+
         // Character icons also need repositioning
 
         this.units.forEach(function (unit) {
@@ -66,12 +89,17 @@ class UIManager {
             unit.icon.y = this.iconPosition.y;
         }, this);
 
-        let offset = 0;
+        let offset = 20;
+        let xoffset = 0;
 
         this.actions.forEach(function (actionTab) {
-            actionTab.x = pos.x + this.windowsize.x * 0.5 - this.barSize.x + 4;
+            actionTab.x = pos.x + this.windowsize.x * 0.5 - this.barSize.x + 4 + xoffset;
             actionTab.y = pos.y + this.windowsize.y * 0.5 - this.barSize.y + 4 + offset;
             offset += 20;
+            if (offset >= 60) {
+                offset = 20;
+                xoffset += 66;
+            }
         }, this);
     }
     iconUpdate(unit) {
@@ -90,7 +118,8 @@ class UIManager {
     }
     showActions(unit) {
         console.log('showing actions...');
-        let offset = 0;
+        let offset = 20;
+        let xoffset = 0;
         const scene = game.scene.keys.default;
         const size = new Vector2(scene.windowsize);
         const pos = new Vector2(scene.camerafocus);
@@ -101,11 +130,15 @@ class UIManager {
         unit.actions.forEach(function (action) {
             const actionTab = new BaseActionUI(action);
             this.actions.push(actionTab);
-            actionTab.x = pos.x - size.x * 0.25 + 4;
+            actionTab.x = pos.x - size.x * 0.25 + 4 + xoffset;
             actionTab.y = pos.y + size.y * 0.22 + 4 + offset;
             offset += 20;
             actionTab.sprite.setInteractive();
             actionTab.sprite.on('pointerdown', action.clicked, action);
+            if (offset >= 60) {
+                offset = 20;
+                xoffset += 66;
+            }
         }, this);
     }
     hideActions() {

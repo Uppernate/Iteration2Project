@@ -80,4 +80,30 @@ class Playfield {
             }
         }
     }
+    highlightTiles(tiles) {
+        this.hideTiles();
+        tiles.forEach(function (tile) {
+            tile.sprite.setTint(0xFFFFFF);
+        }, this);
+    }
+    hideTiles() {
+        this.tiles.forEach(function (tile) {
+            tile.sprite.setTint(0x9E9E9E);
+        }, this);
+    }
+    hideUnits() {
+        this.units.forEach(function (unit) {
+            unit.sprite.alpha = 0.2;
+        }, this);
+    }
+    showTiles() {
+        this.tiles.forEach(function (tile) {
+            tile.sprite.setTint(0xFFFFFF);
+        }, this);
+    }
+    showUnits() {
+        this.units.forEach(function (unit) {
+            unit.sprite.alpha = 1;
+        }, this);
+    }
 }

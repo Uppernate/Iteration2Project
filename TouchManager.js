@@ -27,7 +27,14 @@ class TouchManager {
     constructor() {
         this.touches = [];
         this.storage = {};
+
         this.event = new Phaser.Events.EventEmitter();
+    }
+    on(name, func, scope) {
+        return this.event.on(name, func, scope);
+    }
+    off(name, func, scope) {
+        return this.event.off(name, func, scope);
     }
     make() {
         this.scene = game.scene.keys.default;
@@ -37,6 +44,12 @@ class TouchManager {
         this.scene.input.on('pointermove', this.handleMove, this);
         this.scene.input.on('pointercancel', this.handleEnd, this);
         this.scene.event.on('update', this.update, this);
+    }
+    clearStorage() {
+        const entries = Object.entries(this.storage);
+        entries.forEach(function (entry) {
+            this.storage[entry[0]] = undefined;
+        }, this);
     }
     // Creating a touch from given pointer
     handleStart(pointer) {
@@ -79,6 +92,7 @@ class TouchManager {
         this.touches.forEach(this.touchUpdate, this);
     }
     switchState(name) {
+        this.state.destroy();
         switch (name) {
             case 'none':
                 this.state = new ContextNone(this);

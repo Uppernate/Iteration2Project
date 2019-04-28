@@ -14,9 +14,9 @@ class BaseUnit {
     }
     get timeleft() {
         let seconds = game.scene.keys.default.playfield.secondsPerTurn;
-        this.queue.forEach(function (a) {
-            seconds -= a.finalDuration;
-        });
+        if (this.queue.length > 0) {
+            seconds -= this.queue[this.queue.length - 1].position + this.queue[this.queue.length - 1].duration;
+        }
         return seconds;
     }
     idle(start) {
@@ -59,5 +59,21 @@ class BaseUnit {
     }
     death() {
 
+    }
+    addActionToQueue(action, time, tile, path) {
+        const bar = new BaseQueueBar();
+        bar.action = action;
+        bar.duration = time;
+        bar.tile = tile;
+        bar.path = path;
+        if (this.queue.length > 0) {
+            // Place new action on the right of the last action
+            bar.position = this.queue[this.queue.length - 1].position + this.queue[this.queue.length - 1].duration;
+        }
+        else {
+            // If no actions, default to 0
+            bar.position = 0;
+        }
+        this.queue.push(action);
     }
 }

@@ -5,12 +5,16 @@ class ContextNone extends BaseContext {
         this.listen('press', this.press, this);
         this.listen('swiping', this.swiping, this);
         this.listen('swipestart', this.swipestart, this);
+
+        this.selectedUnit = game.scene.keys.default.UIManager.selectedUnit;
+        if (this.selectedUnit)
+            this.moveSelectionToTile(this.selectedUnit.tile);
     }
     press(touch) {
         const pos = this.getScreenPositionByTouch(touch);
         const window = game.scene.keys.default.windowsize;
         if (pos.y < game.scene.keys.default.UIManager.barPosition.y - game.scene.keys.default.camerafocus.y) {
-            const tile = this.getTileByTouch(touch);
+            const tile = this.getTileByTouch(touch, true);
             this.selection.alpha = 0;
             if (tile) {
                 this.displaySelectionAtTile(tile);

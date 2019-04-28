@@ -28,7 +28,7 @@ class BaseContext {
         tilePos.sub(scene.windowsize.copy().div(2));
         return tilePos;
     }
-    getTileByTouch(touch) {
+    getTileByTouch(touch, hitunits) {
         const tilePos = new Vector2(touch);
         const scene = game.scene.keys.default;
         // Convert Touch Position to real world coordinates
@@ -61,18 +61,20 @@ class BaseContext {
 
         // Get tile at floored map coordinates
         let tile = scene.playfield.get.tile.at(tilePos.x, tilePos.y);
-        let frontTile;
+        if (hitunits) {
+            let frontTile;
 
-        // Swap selected tile to one in front if the unit's invisible hitbox was hit
-        if (unitHit && unitHit == 'front') 
-            frontTile = scene.playfield.get.tile.at(tilePos.x + 1, tilePos.y + 1);
-        if (unitHit && unitHit == 'left') 
-            frontTile = scene.playfield.get.tile.at(tilePos.x + 1, tilePos.y);
-        if (unitHit && unitHit == 'right') 
-            frontTile = scene.playfield.get.tile.at(tilePos.x, tilePos.y + 1);
+            // Swap selected tile to one in front if the unit's invisible hitbox was hit
+            if (unitHit && unitHit == 'front')
+                frontTile = scene.playfield.get.tile.at(tilePos.x + 1, tilePos.y + 1);
+            if (unitHit && unitHit == 'left')
+                frontTile = scene.playfield.get.tile.at(tilePos.x + 1, tilePos.y);
+            if (unitHit && unitHit == 'right')
+                frontTile = scene.playfield.get.tile.at(tilePos.x, tilePos.y + 1);
 
-        if (frontTile && frontTile.unit)
-            tile = frontTile;
+            if (frontTile && frontTile.unit)
+                tile = frontTile;
+        }
 
         return tile;
     }
@@ -83,6 +85,19 @@ class BaseContext {
             this.selection.y = tile.sprite.y - 8;
             this.selection.depth = depth.get('tileOverlay', this.selection.y);
             this.selection.play(game.scene.keys.default.animationManager.getUIAnim('select'));
+        }
+    }
+    moveSelectionToTile(tile) {
+        if (tile) {
+            this.selection.alpha = 1;
+            this.selection.x = tile.sprite.x;
+            this.selection.y = tile.sprite.y - 8;
+            this.selection.depth = depth.get('tileOverlay', this.selection.y);
+            this.selection.play(
+                game.scene.keys.default.animationManager.getUIAnim('select'),
+                false,
+                game.scene.keys.default.animationManager.getUIAnim('select').frames.length - 1
+            );
         }
     }
     moveScreen(touch) {
