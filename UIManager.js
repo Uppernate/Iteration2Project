@@ -4,7 +4,6 @@ class UIManager {
         this.units = [];
         this.actions = [];
         this.queue = [];
-        this.queueBars = [];
     }
     make() {
         // Create the Nine Slice objects for the Unit section and the Actions section
@@ -36,19 +35,22 @@ class UIManager {
     }
     refreshQueue() {
         this.deleteQueue();
-        this.queue.forEach(function (action) {
-            const bar = new BaseQueueBar(action);
-            this.queueBars.push(bar);
-        }, this);
-    }
-    deleteQueue() {
-        while (this.queueBars.length > 0) {
-            const bar = this.queueBars[0];
-            bar.destroy();
-            this.queueBars.splice(0, 1);
+        if (this.selectedUnit) {
+            const queue = this.selectedUnit.queue;
+            queue.forEach(function (bar) {
+                this.queue.push(bar);
+                bar.show();
+            }, this);
         }
     }
+    deleteQueue() {
+        this.queue.forEach(function (bar) {
+            bar.hide();
+        }, this);
+        this.queue.length = 0;
+    }
     reposition() {
+        this.refreshQueue();
         this.barSize.set(this.windowsize).mul(0.75, 0.28);
         this.barSize.y = Math.max(this.barSize.y, 68);
         this.windowhalf.set(this.windowsize).mul(0.5);
@@ -100,6 +102,13 @@ class UIManager {
                 offset = 20;
                 xoffset += 66;
             }
+        }, this);
+
+        // Queue bars
+        this.queue.forEach(function (bar) {
+            bar.x = this.queueWindow.x + bar.position / game.scene.keys.default.playfield.secondsPerTurn * (this.queueWindow.width - 2) + 1;
+            bar.y = this.queueWindow.y + 2;
+            bar.resize(bar.duration / game.scene.keys.default.playfield.secondsPerTurn * (this.queueWindow.width - 2));
         }, this);
     }
     iconUpdate(unit) {

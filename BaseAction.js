@@ -7,6 +7,7 @@ class BaseAction {
         this.distanceCost = 0.25;
         this.duration = 0.25;
         this.distanceTime = 0.25;
+        this.colour = 0x4797FF;
     }
     clicked() {
         console.log('base action does nothing! Override it!');

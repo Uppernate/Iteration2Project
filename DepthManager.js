@@ -8,7 +8,8 @@ class DepthManager {
             unit: 64,
             ui: 10000,
             uiIcon: 12000,
-            uiAction: 11000
+            uiAction: 11000,
+            uiQueueBar: 13000
         }
     }
     get(type, y) {

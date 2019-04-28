@@ -43,9 +43,6 @@ class MoveAction extends BaseAction {
         // Playfield Management
         game.scene.keys.default.playfield.showUnits();
         game.scene.keys.default.playfield.showTiles();
-
-        // Unit Management
-        this.unit.addActionToQueue(this);
     }
     fail() {
         const manager = game.scene.keys.default.touchManager;

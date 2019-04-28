@@ -45,7 +45,7 @@ class Scene extends Phaser.Scene {
         this.load.image("action-dash", "img/action-dash.png");
 
         this.load.image("queue-action", "img/queue-action.png");
-        this.load.image("queue-action-bg", "img/queue-action-bg.png");
+        this.load.image("queue-action-bg", "img/queue-action-cover.png");
     }
     create() {
         this.map = this.make.tilemap({ key: "tilemap" });

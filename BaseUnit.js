@@ -61,11 +61,14 @@ class BaseUnit {
 
     }
     addActionToQueue(action, time, tile, path) {
+        console.log('addActionToQueue()');
         const bar = new BaseQueueBar();
         bar.action = action;
         bar.duration = time;
         bar.tile = tile;
         bar.path = path;
+        bar.icon.setTexture(`action-${action.icon}`);
+        bar.bar.setTint(action.colour);
         if (this.queue.length > 0) {
             // Place new action on the right of the last action
             bar.position = this.queue[this.queue.length - 1].position + this.queue[this.queue.length - 1].duration;
@@ -74,6 +77,6 @@ class BaseUnit {
             // If no actions, default to 0
             bar.position = 0;
         }
-        this.queue.push(action);
+        this.queue.push(bar);
     }
 }
