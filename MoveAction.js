@@ -38,7 +38,7 @@ class MoveAction extends BaseAction {
         const reference = this.latestChecked.find(a => a.original === tile);
         const path = this.makePathFrom(reference);
         const totalTime = this.duration + this.distanceTime * reference.distance;
-        this.unit.addActionToQueue(this, totalTime, tile, path);
+        const bar = this.unit.addActionToQueue(this, totalTime, tile, path, 'moveTo');
 
         // Playfield Management
         game.scene.keys.default.playfield.showUnits();

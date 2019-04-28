@@ -11,6 +11,26 @@ class BaseUnit {
         this.queue = [];
         this.sprite = game.scene.keys.default.physics.add.sprite(this.position.x, this.position.y, 'unit');
         this.sprite.depth = depth.get('unit', this.y);
+        this.ghost = game.scene.keys.default.physics.add.sprite(this.position.x, this.position.y, 'unit');
+        this.ghost.depth = depth.get('unit', this.y);
+        this.ghost.alpha = 0.5;
+        this.ghost.setVisible(false);
+    }
+    futureTile(time) {
+        // Prepare initial variables and results
+        let index = 0;
+        let bar = this.queue[0];
+        let tile = this.tile;
+        // Stop if bar doesn't exist, or position is greater than time specified
+        while (bar && bar.position <= time) {
+            // Unit only moves on this property existing
+            if (bar.moveTo)
+                tile = bar.moveTo;
+            // Move onto another queued bar
+            index++;
+            bar = this.queue[index];
+        }
+        return tile;
     }
     get timeleft() {
         let seconds = game.scene.keys.default.playfield.secondsPerTurn;
@@ -20,10 +40,15 @@ class BaseUnit {
         return seconds;
     }
     idle(start) {
-        if (start)
-            this.sprite.anims.play(this.getAnimation('idle'), false, this.getRandomFrame('idle'));
-        else
+        if (start) {
+            const rand = this.getRandomFrame('idle');
+            this.sprite.anims.play(this.getAnimation('idle'), false, rand);
+            this.ghost.anims.play(this.getAnimation('idle'), false, rand);
+        }
+        else {
             this.sprite.anims.play(this.getAnimation('idle'));
+            this.ghost.anims.play(this.getAnimation('idle'));
+        }
     }
     getRandomFrame(name) {
         return Math.floor(Math.random() * this.getAnimation(name).frames.length);
@@ -54,13 +79,29 @@ class BaseUnit {
         this.sprite.depth = depth.get('unit', this.y);
         this.sprite.y = this.position.y + this._z;
     }
+    refreshGhost() {
+        // Get the final tile this unit will move to
+        const tile = this.futureTile(game.scene.keys.default.playfield.secondsPerTurn);
+        // Only have the ghost appear if tile is different than already standing on
+        if (game.scene.keys.default.UIManager.selectedUnit === this && tile !== this.tile) {
+            // Turn visible and position correctly
+            this.ghost.setVisible(true);
+            this.ghost.x = tile.x * 16 - tile.y * 16;
+            this.ghost.y = tile.x * 8 + tile .y * 8 - 16 - 2;
+            this.ghost.depth = depth.get('ui', this.ghost.y);
+        }
+        else {
+            // Hide otherwise
+            this.ghost.setVisible(false);
+        }
+    }
     damage() {
 
     }
     death() {
 
     }
-    addActionToQueue(action, time, tile, path) {
+    addActionToQueue(action, time, tile, path, type) {
         console.log('addActionToQueue()');
         const bar = new BaseQueueBar();
         bar.action = action;
@@ -69,6 +110,7 @@ class BaseUnit {
         bar.path = path;
         bar.icon.setTexture(`action-${action.icon}`);
         bar.bar.setTint(action.colour);
+
         if (this.queue.length > 0) {
             // Place new action on the right of the last action
             bar.position = this.queue[this.queue.length - 1].position + this.queue[this.queue.length - 1].duration;
@@ -78,5 +120,14 @@ class BaseUnit {
             bar.position = 0;
         }
         this.queue.push(bar);
+
+        switch (type) {
+            case 'moveTo':
+                bar.moveTo = tile;
+                this.refreshGhost();
+                break;
+        }
+
+        return bar;
     }
 }

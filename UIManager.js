@@ -30,6 +30,30 @@ class UIManager {
         this.iconPosition = this.camerafocus.copy();
     }
     update() {
+        if (this.selectedUnitOld) {
+            // If old exists, new exists and different
+            if (this.selectedUnit && this.selectedUnit !== this.selectedUnitOld) {
+                this.selectedUnitOld.refreshGhost();
+                this.selectedUnit.refreshGhost();
+                this.selectedUnitOld = this.selectedUnit;
+            }
+            // Old exists, new exists, but same
+            else if (this.selectedUnit) {
+
+            }
+            // Old exists, new doesn't
+            else {
+                this.selectedUnitOld.refreshGhost();
+                this.selectedUnitOld = undefined;
+            }
+        }
+        // Old doesn't exist, new does
+        else {
+            if (this.selectedUnit) {
+                this.selectedUnit.refreshGhost();
+                this.selectedUnitOld = this.selectedUnit;
+            }
+        }
         this.units.forEach(this.iconUpdate, this);
         this.reposition();
     }

@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base Classes", "Base Classe
 		BaseAction.js = BaseAction.js
 		BaseActionUI.js = BaseActionUI.js
 		BaseContext.js = BaseContext.js
+		BaseQueueBar.js = BaseQueueBar.js
 		BaseScene.js = BaseScene.js
 		BaseTile.js = BaseTile.js
 		BaseUnit.js = BaseUnit.js
@@ -35,6 +36,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Touch Contexts", "Touch Contexts", "{4260BD90-820D-4220-8E33-82D7465562C1}"
 	ProjectSection(SolutionItems) = preProject
 		ContextNone.js = ContextNone.js
+		ContextSelectTiles.js = ContextSelectTiles.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Units", "Units", "{05A39E81-9D85-4527-A6F1-21E707C00A81}"
