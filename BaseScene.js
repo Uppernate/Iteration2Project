@@ -28,6 +28,8 @@ class Scene extends Phaser.Scene {
         this.load.spritesheet("unit", "img/unit.png", { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("select", "img/select.png", { frameWidth: 30, frameHeight: 16 });
         this.load.spritesheet("select-move", "img/select-move.png", { frameWidth: 30, frameHeight: 16 });
+        this.load.spritesheet("select-path-move", "img/select-path-move.png", { frameWidth: 30, frameHeight: 16 });
+        this.load.spritesheet("select-path-dash", "img/select-path-dash.png", { frameWidth: 30, frameHeight: 16 });
 
         this.load.spritesheet("unit-archer-idle", "img/unit-archer-idle.png", { frameWidth: 32, frameHeight: 32 });
         this.load.image("unit-archer-icon", "img/unit-archer-icon.png");
@@ -46,10 +48,13 @@ class Scene extends Phaser.Scene {
 
         this.load.image("queue-action", "img/queue-action.png");
         this.load.image("queue-action-bg", "img/queue-action-cover.png");
+
+        this.load.image("play", "img/play.png");
     }
     create() {
         this.map = this.make.tilemap({ key: "tilemap" });
         // Initialise Managers
+        this.playfield.setupEvents();
         this.touchManager.make();
         this.animationManager.make();
         this.level.make(this.map);
@@ -65,7 +70,7 @@ class Scene extends Phaser.Scene {
         this.event.emit('resize');
     }
     update(time, delta) {
-        this.event.emit('update', time);
+        this.event.emit('update', time, delta);
         this.cameras.main.centerOn(Math.round(this.camerafocus.x), Math.round(this.camerafocus.y));
     }
     resize(gameSize, baseSize, displaySize, resolution) {

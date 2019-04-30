@@ -46,10 +46,7 @@ class TouchManager {
         this.scene.event.on('update', this.update, this);
     }
     clearStorage() {
-        const entries = Object.entries(this.storage);
-        entries.forEach(function (entry) {
-            this.storage[entry[0]] = undefined;
-        }, this);
+        this.storage.length = 0;
     }
     // Creating a touch from given pointer
     handleStart(pointer) {

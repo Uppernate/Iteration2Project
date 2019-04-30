@@ -15,12 +15,39 @@ class BaseUnit {
         this.ghost.depth = depth.get('unit', this.y);
         this.ghost.alpha = 0.5;
         this.ghost.setVisible(false);
+        game.scene.keys.default.playfield.event.on('turn-started', this.onTurnStart, this);
+        game.scene.keys.default.playfield.event.on('turn-progress', this.onTurnProgress, this);
+        game.scene.keys.default.playfield.event.on('turn-finished', this.onTurnFinished, this);
+    }
+    onTurnStart() {
+        console.log('start');
+    }
+    onTurnProgress(progress) {
+        // Current action that should be playing
+        const action = this.queue.find(a => a.position <= progress && (a.duration + a.position) > progress);
+        if (this.currentAction && this.currentAction === action) {
+            action.progress((progress - action.position) / action.duration);
+        }
+        else if (this.currentAction) {
+            this.currentAction.end((progress - this.currentAction.position) / this.currentAction.duration);
+            this.currentAction = action;
+            if (action)
+                action.begin((progress - action.position) / action.duration);
+        }
+        else if (action) {
+            this.currentAction = action;
+            action.begin((progress - action.position) / action.duration);
+        }
+    }
+    onTurnFinished() {
+        this.clearQueue();
     }
     futureTile(time) {
         // Prepare initial variables and results
         let index = 0;
         let bar = this.queue[0];
         let tile = this.tile;
+        time = time || game.scene.keys.default.playfield.secondsPerTurn;
         // Stop if bar doesn't exist, or position is greater than time specified
         while (bar && bar.position <= time) {
             // Unit only moves on this property existing
@@ -102,7 +129,6 @@ class BaseUnit {
 
     }
     addActionToQueue(action, time, tile, path, type) {
-        console.log('addActionToQueue()');
         const bar = new BaseQueueBar();
         bar.action = action;
         bar.duration = time;
@@ -128,6 +154,14 @@ class BaseUnit {
                 break;
         }
 
+        bar.show();
         return bar;
+    }
+    clearQueue() {
+        while (this.queue.length > 0) {
+            const bar = this.queue[0];
+            bar.destroy();
+            this.queue.splice(0, 1);
+        }
     }
 }

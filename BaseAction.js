@@ -12,16 +12,48 @@ class BaseAction {
     clicked() {
         console.log('base action does nothing! Override it!');
     }
+    cancel() {
+        console.log('I dunno if I can do much here');
+    }
+    begin(bar) {
+        console.log('Empty action began, doing nothing!');
+    }
+    progress(bar, progress) {
+        console.log(`Empty action progressing... at ${Math.round(progress * 10000) * 0.01}`);
+    }
+    end(bar) {
+        console.log('Empty action ended!');
+    }
     makePathFrom(reference) {
         const path = [];
         while (reference) {
             path.push(reference.original);
             reference = reference.parent;
         }
+        path.reverse();
         return path;
     }
+    switchContextAndPass(state, storage) {
+        const manager = game.scene.keys.default.touchManager;
+        if (storage) {
+            manager.clearStorage();
+            const entries = Object.entries(storage);
+            entries.forEach(function (a) { manager.storage[a[0]] = a[1]; });
+        }
+        manager.switchState(state);
+    }
+    defaultListen() {
+        const manager = game.scene.keys.default.touchManager;
+        manager.on('context-selected', this.success, this);
+        manager.on('context-cancel', this.fail, this);
+    }
+    defaultDeafen() {
+        const manager = game.scene.keys.default.touchManager;
+        manager.off('context-selected', this.success, this);
+        manager.off('context-cancel', this.fail, this);
+    }
     selectTilesByMove() {
-        const tile = this.unit.tile;
+        const tile = this.unit.futureTile();
         // Create the first reference
         const reference = new ReferenceTile(tile);
         // Prevent multiple tiles checked more than once + the resulting array
@@ -81,7 +113,7 @@ class BaseAction {
         // Start the process
         reference.run();
         // Remove the tile unit is standing on
-        tiles.splice(tiles.findIndex(a => a === this.unit.tile, this), 1);
+        tiles.splice(tiles.findIndex(a => a === this.unit.futureTile(), this), 1);
         // Display a temporary graphic over the selected tile for debugging
         /*
         tiles.forEach(function (tile) {

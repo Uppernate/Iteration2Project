@@ -10,6 +10,7 @@ class UIManager {
         this.window = game.scene.keys.default.add.nineslice(0, 100, 100, 100, 'ui-window', 4, 4);
         this.unitWindow = game.scene.keys.default.add.nineslice(0, 100, 100, 100, 'ui-unit-window', [0, 4, 9, 23]);
         this.queueWindow = game.scene.keys.default.add.nineslice(0, 100, 100, 100, 'ui-window', 4, 4);
+        this.play = game.scene.keys.default.add.sprite(0, 0, 'play');
         // Set correct depth and make slightly transparent
         this.window.depth = depth.get('ui', 0);
         this.window.alpha = 0.5;
@@ -17,10 +18,13 @@ class UIManager {
         this.unitWindow.alpha = 0.5;
         this.queueWindow.depth = depth.get('ui', 1);
         this.queueWindow.alpha = 0.5;
+        this.play.depth = depth.get('ui', 2);
 
         // ALso listen to scene's events when they happen for UI Manager's other functions
         game.scene.keys.default.event.on('update', this.update, this);
         game.scene.keys.default.event.on('resize', this.reposition, this);
+        this.play.setInteractive();
+        this.play.on('pointerdown', this.playPressed, this);
 
         this.camerafocus = game.scene.keys.default.camerafocus;
         this.windowsize = game.scene.keys.default.windowsize;
@@ -28,6 +32,9 @@ class UIManager {
         this.barSize = this.windowsize.copy().mul(0.75, 0.22);
         this.barPosition = this.camerafocus.copy().add(this.windowsize.copy().mul(0.5)).sub(this.barSize);
         this.iconPosition = this.camerafocus.copy();
+    }
+    playPressed() {
+        game.scene.keys.default.playfield.startTurn();
     }
     update() {
         if (this.selectedUnitOld) {
@@ -106,7 +113,10 @@ class UIManager {
         this.unitWindow.y = this.barPosition.y;
 
         this.queueWindow.x = this.barPosition.x + 4;
-        this.queueWindow.y = this.barPosition.y + 4; 
+        this.queueWindow.y = this.barPosition.y + 4;
+
+        this.play.x = this.barPosition.x + this.barSize.x - this.play.width / 2 - 4;
+        this.play.y = this.barPosition.y + this.barSize.y - this.play.height / 2 - 4;
 
         // Character icons also need repositioning
 
@@ -149,8 +159,21 @@ class UIManager {
         icon.depth = depth.get('uiIcon', 0);
         this.units.push({ unit: unit, icon: icon });
     }
+    tabClicked() {
+        const tab = this.tab;
+        const action = this.action;
+        const manager = this.manager;
+        if (!manager.currentAction) {
+            manager.currentAction = action;
+            action.clicked();
+        }
+        else {
+            manager.currentAction.cancel();
+            manager.currentAction = action;
+            action.clicked();
+        }
+    }
     showActions(unit) {
-        console.log('showing actions...');
         let offset = 20;
         let xoffset = 0;
         const scene = game.scene.keys.default;
@@ -167,7 +190,7 @@ class UIManager {
             actionTab.y = pos.y + size.y * 0.22 + 4 + offset;
             offset += 20;
             actionTab.sprite.setInteractive();
-            actionTab.sprite.on('pointerdown', action.clicked, action);
+            actionTab.sprite.on('pointerdown', this.tabClicked, { tab: actionTab, action: action, manager: this });
             if (offset >= 60) {
                 offset = 20;
                 xoffset += 66;

@@ -5,6 +5,10 @@ class Playfield {
         this.tiles = [];
         this.units = [];
         this.secondsPerTurn = 2;
+        this.progressing = false;
+        this.turnProgress = 0;
+        this.turnSpeed = 1.0;
+        this.event = new Phaser.Events.EventEmitter();
         let self = this;
         this.add = {
             tile: function (tile) {
@@ -80,6 +84,9 @@ class Playfield {
             }
         }
     }
+    setupEvents() {
+        game.scene.keys.default.event.on('update', this.update, this);
+    }
     highlightTiles(tiles) {
         this.hideTiles();
         tiles.forEach(function (tile) {
@@ -105,5 +112,26 @@ class Playfield {
         this.units.forEach(function (unit) {
             unit.sprite.alpha = 1;
         }, this);
+    }
+    update(time, frame) {
+        if (this.progressing) {
+            this.event.emit('turn-progress', this.turnProgress);
+            if (this.turnProgress >= this.secondsPerTurn) {
+                this.progressing = false;
+                this.turnProgress = 0;
+                this.finishTurn();
+            }
+            this.turnProgress += this.turnSpeed * 0.001 * frame;
+            this.turnProgress = Math.min(this.turnProgress, this.secondsPerTurn);
+        }
+    }
+    startTurn() {
+        if (!this.progressing) {
+            this.progressing = true; // Turn started, trust me
+            this.event.emit('turn-started');
+        }
+    }
+    finishTurn() {
+        this.event.emit('turn-finished');
     }
 }
