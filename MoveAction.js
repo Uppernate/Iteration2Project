@@ -89,6 +89,8 @@ class MoveAction extends BaseAction {
         }
     }
     end(bar) {
-
+        if (bar.stopped) {
+            this.unit.clearQueue();
+        }
     }
 }

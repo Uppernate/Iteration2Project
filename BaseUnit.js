@@ -24,12 +24,13 @@ class BaseUnit {
     }
     onTurnProgress(progress) {
         // Current action that should be playing
-        const action = this.queue.find(a => a.position <= progress && (a.duration + a.position) > progress);
+        let action = this.queue.find(a => a.position <= progress && (a.duration + a.position) > progress);
         if (this.currentAction && this.currentAction === action) {
             action.progress((progress - action.position) / action.duration);
         }
         else if (this.currentAction) {
             this.currentAction.end((progress - this.currentAction.position) / this.currentAction.duration);
+            action = this.queue.find(a => a.position <= progress && (a.duration + a.position) > progress);
             this.currentAction = action;
             if (action)
                 action.begin((progress - action.position) / action.duration);
