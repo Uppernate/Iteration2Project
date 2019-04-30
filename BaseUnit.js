@@ -20,7 +20,7 @@ class BaseUnit {
         game.scene.keys.default.playfield.event.on('turn-finished', this.onTurnFinished, this);
     }
     onTurnStart() {
-        console.log('start');
+        //console.log('start');
     }
     onTurnProgress(progress) {
         // Current action that should be playing

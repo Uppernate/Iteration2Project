@@ -46,49 +46,44 @@ class MoveAction extends BaseAction {
     }
     progress(bar, progress) {
         if (!bar.stopped) {
+            // Get measurements for how long one tile should take in time
             const tileDuration = 1 / (bar.path.length - 1);
+            const tileProgress = (progress / tileDuration) % 1;
+            // Current, next and rounded 'Where unit is standing on' tiles
             const currentTile = bar.path[Math.floor(progress / tileDuration)];
             let nextTile = bar.path[Math.floor(progress / tileDuration) + 1];
-            let i = Math.floor(progress / tileDuration) + 1;
-            if (!nextTile) {
-                nextTile = currentTile;
-                i--;
-            }
             const underneathTile = bar.path[Math.round(progress / tileDuration)];
-            const tileProgress = (progress / tileDuration) % 1;
-
-            const currentVector = new Vector2(currentTile.x * 16 - currentTile.y * 16, currentTile.x * 8 + currentTile.y * 8 - 16 - 2);
-            const nextVector = new Vector2(nextTile.x * 16 - nextTile.y * 16, nextTile.x * 8 + nextTile.y * 8 - 16 - 2);
-
-            this.unit.position.set(currentVector).lerp(nextVector, tileProgress);
-
-            let clearPath = nextTile;
-            let clearBool = true;
-            if (clearPath && clearPath.unit && clearPath.unit !== this.unit) {
-                clearBool = false;
-            }
-
-            while (!clearBool && ++i < bar.path.length) {
-                clearPath = bar.path[i];
-                if (clearPath && (!clearPath.unit || clearPath.unit === this.unit)) {
-                    clearBool = true;
-                }
-            }
-            console.log(clearBool);
-            if (nextTile && nextTile.unit !== this.unit.tile && !clearBool) {
+            // Replace next with current if there is no next tile
+            if (!nextTile)
+                nextTile = currentTile;
+            // Interpolate positions from current to next by progress
+            this.interpolatePosition(currentTile, nextTile, tileProgress);
+            // Check if next blocks are blocked by units
+            const pathUnitBlocked = this.isPathUnitBlocked(bar.path, nextTile, true);
+            // Stop if it is
+            if (nextTile && pathUnitBlocked &&
+                nextTile.unit !== this.unit.tile) {
                 bar.stopped = true;
-                this.unit.x = currentTile.x * 16 - currentTile.y * 16;
-                this.unit.y = currentTile.x * 8 + currentTile.y * 8 - 16 - 2;
-                this.unit.clearQueue();
+                bar.lastOffset = tileProgress;
+                bar.lastIndex = Math.floor(progress / tileDuration);
+                bar.fromTile = nextTile;
+                bar.lastTile = currentTile;
+                bar.fromPosition = this.unit.position.copy();
+                //this.unit.clearQueue();
             }
-            if (clearBool && underneathTile !== this.unit.tile) {
-                if (!underneathTile.unit) {
-                    this.unit.tile.unit = undefined;
-                    underneathTile.unit = this.unit;
-                    this.unit.tile = underneathTile;
-                }
+            // Move if it isn't
+            if (!pathUnitBlocked) {
+                this.moveUnitToTile(underneathTile);
             }
+        }
+        else {
+            // Get measurements for how long one tile should take in time
+            const tileDuration = 1 / (bar.path.length - 1);
+            //const tileProgress = 1 - ((progress / tileDuration) % 1);
+            const tileProgress = Math.min((progress / tileDuration - bar.lastIndex - bar.lastOffset) / (1 - bar.lastOffset), 1);
+            const lastTile = new Vector2(bar.lastTile.x * 16 - bar.lastTile.y * 16, bar.lastTile.x * 8 + bar.lastTile.y * 8 - 16 - 2);
 
+            this.unit.position.set(bar.fromPosition).lerp(lastTile, tileProgress);
             this.unit.x = this.unit.position.x;
             this.unit.y = this.unit.position.y;
         }

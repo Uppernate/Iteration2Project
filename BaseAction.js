@@ -127,4 +127,44 @@ class BaseAction {
 
         return tiles;
     }
+    isPathUnitBlocked(path, startFrom, otherTeamBlock) {
+
+        let tile = startFrom;
+        let i = path.findIndex(a => a === startFrom);
+        let blocked = false;
+        let team;
+
+        if (tile && tile.unit && tile.unit !== this.unit) {
+            blocked = true;
+            team = tile.unit.team;
+        }
+
+        if (team === this.unit.team || !otherTeamBlock) {
+            while (blocked && ++i < path.length) {
+                tile = path[i];
+                if (tile && (!tile.unit || tile.unit === this.unit)) {
+                    blocked = false;
+                }
+            }
+        }
+        return blocked;
+    }
+    moveUnitToTile(tile) {
+        if (tile !== this.unit.tile) {
+            if (!tile.unit) {
+                this.unit.tile.unit = undefined;
+                tile.unit = this.unit;
+                this.unit.tile = tile;
+            }
+        }
+    }
+    interpolatePosition(start, end, percent) {
+        const sV = new Vector2(start.x * 16 - start.y * 16, start.x * 8 + start.y * 8 - 16 - 2);
+        const eV = new Vector2(end.x * 16 - end.y * 16, end.x * 8 + end.y * 8 - 16 - 2);
+
+        this.unit.position.set(sV).lerp(eV, percent);
+
+        this.unit.x = this.unit.position.x;
+        this.unit.y = this.unit.position.y;
+    }
 }
