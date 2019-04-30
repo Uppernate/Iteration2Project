@@ -98,7 +98,7 @@ class TouchManager {
                 this.state = new ContextSelectTiles(this);
                 break;
             case 'advancing':
-                this.state = new ContextAdvancingPlay(this);
+                this.state = new ContextAdvancing(this);
                 break;
         }
     }

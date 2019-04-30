@@ -27,6 +27,7 @@ class MoveAction extends BaseAction {
         // Path of movement
         const reference = this.latestChecked.find(a => a.original === tile);
         const path = this.makePathFrom(reference);
+        
         const totalTime = this.duration + this.distanceTime * reference.distance;
         const bar = this.unit.addActionToQueue(this, totalTime, tile, path, 'moveTo');
         bar.displayPath();
@@ -48,8 +49,11 @@ class MoveAction extends BaseAction {
             const tileDuration = 1 / (bar.path.length - 1);
             const currentTile = bar.path[Math.floor(progress / tileDuration)];
             let nextTile = bar.path[Math.floor(progress / tileDuration) + 1];
-            if (!nextTile)
+            let i = Math.floor(progress / tileDuration) + 1;
+            if (!nextTile) {
                 nextTile = currentTile;
+                i--;
+            }
             const underneathTile = bar.path[Math.round(progress / tileDuration)];
             const tileProgress = (progress / tileDuration) % 1;
 
@@ -58,20 +62,35 @@ class MoveAction extends BaseAction {
 
             this.unit.position.set(currentVector).lerp(nextVector, tileProgress);
 
-            this.unit.x = this.unit.position.x;
-            this.unit.y = this.unit.position.y;
-            if (underneathTile !== this.unit.tile) {
+            let clearPath = nextTile;
+            let clearBool = true;
+            if (clearPath && clearPath.unit && clearPath.unit !== this.unit) {
+                clearBool = false;
+            }
+
+            while (!clearBool && ++i < bar.path.length) {
+                clearPath = bar.path[i];
+                if (clearPath && (!clearPath.unit || clearPath.unit === this.unit)) {
+                    clearBool = true;
+                }
+            }
+            console.log(clearBool);
+            if (nextTile && nextTile.unit !== this.unit.tile && !clearBool) {
+                bar.stopped = true;
+                this.unit.x = currentTile.x * 16 - currentTile.y * 16;
+                this.unit.y = currentTile.x * 8 + currentTile.y * 8 - 16 - 2;
+                this.unit.clearQueue();
+            }
+            if (clearBool && underneathTile !== this.unit.tile) {
                 if (!underneathTile.unit) {
                     this.unit.tile.unit = undefined;
                     underneathTile.unit = this.unit;
                     this.unit.tile = underneathTile;
                 }
-                /*else {
-                    bar.stopped = true;
-                    this.unit.x = currentTile.x * 16 - currentTile.y * 16;
-                    this.unit.y = currentTile.x * 8 + currentTile.y * 8 - 16 - 2;
-                }*/
             }
+
+            this.unit.x = this.unit.position.x;
+            this.unit.y = this.unit.position.y;
         }
     }
     end(bar) {

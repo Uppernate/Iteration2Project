@@ -163,5 +163,6 @@ class BaseUnit {
             bar.destroy();
             this.queue.splice(0, 1);
         }
+        this.refreshGhost();
     }
 }

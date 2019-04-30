@@ -43,8 +43,9 @@ class Playfield {
                         playUnit = new UnitSkeleton();
                         break;
                 }
-
+                playUnit.team = team.value;
                 if (team && team.value === 'player') {
+                    playUnit.team =
                     game.scene.keys.default.UIManager.addUnit(playUnit);
                 }
 
@@ -128,10 +129,14 @@ class Playfield {
     startTurn() {
         if (!this.progressing) {
             this.progressing = true; // Turn started, trust me
+            game.scene.keys.default.UIManager.hideActions();
+            game.scene.keys.default.UIManager.selectedUnit = undefined;
+            game.scene.keys.default.touchManager.switchState('advancing', {});
             this.event.emit('turn-started');
         }
     }
     finishTurn() {
+        game.scene.keys.default.touchManager.switchState('none', {});
         this.event.emit('turn-finished');
     }
 }

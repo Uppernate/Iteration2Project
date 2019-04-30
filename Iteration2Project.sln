@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiles", "Tiles", "{283D78C5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Touch Contexts", "Touch Contexts", "{4260BD90-820D-4220-8E33-82D7465562C1}"
 	ProjectSection(SolutionItems) = preProject
+		ContextAdvancing.js = ContextAdvancing.js
 		ContextNone.js = ContextNone.js
 		ContextSelectTiles.js = ContextSelectTiles.js
 	EndProjectSection
