@@ -129,12 +129,12 @@ class BaseUnit {
     death() {
 
     }
-    addActionToQueue(action, time, tile, path, type) {
+    addActionToQueue(action, info) {
         const bar = new BaseQueueBar();
         bar.action = action;
-        bar.duration = time;
-        bar.tile = tile;
-        bar.path = path;
+        bar.duration = info.time;
+        bar.tile = info.tile;
+        bar.path = info.path;
         bar.icon.setTexture(`action-${action.icon}`);
         bar.bar.setTint(action.colour);
 
@@ -148,9 +148,9 @@ class BaseUnit {
         }
         this.queue.push(bar);
 
-        switch (type) {
+        switch (info.type) {
             case 'moveTo':
-                bar.moveTo = tile;
+                bar.moveTo = info.tile;
                 this.refreshGhost();
                 break;
         }

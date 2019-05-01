@@ -25,62 +25,59 @@ class MoveAction extends BaseAction {
         this.switchContextAndPass('none', {});
         this.defaultDeafen();
         // Path of movement
-        const reference = this.latestChecked.find(a => a.original === tile);
-        const path = this.makePathFrom(reference);
-        
-        const totalTime = this.duration + this.distanceTime * reference.distance;
-        const bar = this.unit.addActionToQueue(this, totalTime, tile, path, 'moveTo');
+        const queue = { reference: this.getReference(tile), tile: tile, type: 'moveTo' };
+        queue.path = this.getPath(queue.reference);
+        queue.time = this.calculateTime(queue.reference);
+        const bar = this.unit.addActionToQueue(this, queue);
         bar.displayPath();
         // Playfield Management
-        game.scene.keys.default.playfield.showUnits();
-        game.scene.keys.default.playfield.showTiles();
+        this.showEverything();
     }
     fail() {
         this.switchContextAndPass('none', {});
         this.defaultDeafen();
-        game.scene.keys.default.playfield.showUnits();
-        game.scene.keys.default.playfield.showTiles();
+        this.showEverything();
     }
     begin(bar) {
         // TODO: Start animations, etc.
+        // Get measurements for how long one tile should take in time
+        bar.tDuration = 1 / (bar.path.length - 1);
     }
     progress(bar, progress) {
         if (!bar.stopped) {
             // Get measurements for how long one tile should take in time
-            const tileDuration = 1 / (bar.path.length - 1);
-            const tileProgress = (progress / tileDuration) % 1;
+            const tileProgress = (progress / bar.tDuration) % 1;
             // Current, next and rounded 'Where unit is standing on' tiles
-            const currentTile = bar.path[Math.floor(progress / tileDuration)];
-            let nextTile = bar.path[Math.floor(progress / tileDuration) + 1];
-            const underneathTile = bar.path[Math.round(progress / tileDuration)];
+            const tiles = {
+                current: bar.path[Math.floor(progress / bar.tDuration)],
+                next: bar.path[Math.floor(progress / bar.tDuration) + 1],
+                under: bar.path[Math.round(progress / bar.tDuration)]
+            }
             // Replace next with current if there is no next tile
-            if (!nextTile)
-                nextTile = currentTile;
+            if (!tiles.next)
+                tiles.next = tiles.current;
             // Interpolate positions from current to next by progress
-            this.interpolatePosition(currentTile, nextTile, tileProgress);
+            this.interpolatePosition(tiles.current, tiles.next, tileProgress);
             // Check if next blocks are blocked by units
-            const pathUnitBlocked = this.isPathUnitBlocked(bar.path, nextTile, true);
+            const pathUnitBlocked = this.isPathUnitBlocked(bar.path, tiles.next, true);
             // Stop if it is
-            if (nextTile && pathUnitBlocked &&
-                nextTile.unit !== this.unit.tile) {
+            if (tiles.next && pathUnitBlocked &&
+                tiles.next.unit !== this.unit.tile) {
                 bar.stopped = true;
                 bar.lastOffset = tileProgress;
-                bar.lastIndex = Math.floor(progress / tileDuration);
-                bar.fromTile = nextTile;
-                bar.lastTile = currentTile;
+                bar.lastIndex = Math.floor(progress / bar.tDuration);
+                bar.fromTile = tiles.next;
+                bar.lastTile = tiles.current;
                 bar.fromPosition = this.unit.position.copy();
                 //this.unit.clearQueue();
             }
             // Move if it isn't
             if (!pathUnitBlocked) {
-                this.moveUnitToTile(underneathTile);
+                this.moveUnitToTile(tiles.under);
             }
         }
         else {
-            // Get measurements for how long one tile should take in time
-            const tileDuration = 1 / (bar.path.length - 1);
-            //const tileProgress = 1 - ((progress / tileDuration) % 1);
-            const tileProgress = Math.min((progress / tileDuration - bar.lastIndex - bar.lastOffset) / (1 - bar.lastOffset), 1);
+            const tileProgress = Math.min((progress / bar.tDuration - bar.lastIndex - bar.lastOffset) / (1 - bar.lastOffset), 1);
             const lastTile = new Vector2(bar.lastTile.x * 16 - bar.lastTile.y * 16, bar.lastTile.x * 8 + bar.lastTile.y * 8 - 16 - 2);
 
             this.unit.position.set(bar.fromPosition).lerp(lastTile, tileProgress);

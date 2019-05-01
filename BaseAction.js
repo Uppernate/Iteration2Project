@@ -24,7 +24,11 @@ class BaseAction {
     end(bar) {
         console.log('Empty action ended!');
     }
-    makePathFrom(reference) {
+    getReference(tile) {
+        const reference = this.latestChecked.find(a => a.original === tile);
+        return reference;
+    }
+    getPath(reference) {
         const path = [];
         while (reference) {
             path.push(reference.original);
@@ -32,6 +36,13 @@ class BaseAction {
         }
         path.reverse();
         return path;
+    }
+    calculateTime(reference) {
+        return this.duration + this.distanceTime * reference.distance;
+    }
+    showEverything() {
+        game.scene.keys.default.playfield.showUnits();
+        game.scene.keys.default.playfield.showTiles();
     }
     switchContextAndPass(state, storage) {
         const manager = game.scene.keys.default.touchManager;
