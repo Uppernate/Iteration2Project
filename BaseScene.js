@@ -24,10 +24,12 @@ class Scene extends Phaser.Scene {
         this.load.tilemapTiledJSON("tilemap", "levels/simple.json");
 
         this.load.spritesheet("terrain", "img/terrain.png", { frameWidth: 30, frameHeight: 32, margin: 1, spacing: 2 });
+        this.load.spritesheet("tile-water", "img/tile-water.png", { frameWidth: 30, frameHeight: 32, margin: 0, spacing: 0 });
 
         this.load.spritesheet("unit", "img/unit.png", { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("select", "img/select.png", { frameWidth: 30, frameHeight: 16 });
         this.load.spritesheet("select-move", "img/select-move.png", { frameWidth: 30, frameHeight: 16 });
+
         this.load.spritesheet("select-path-move", "img/select-path-move.png", { frameWidth: 30, frameHeight: 16 });
         this.load.spritesheet("select-path-dash", "img/select-path-dash.png", { frameWidth: 30, frameHeight: 16 });
 
@@ -54,9 +56,9 @@ class Scene extends Phaser.Scene {
     create() {
         this.map = this.make.tilemap({ key: "tilemap" });
         // Initialise Managers
+        this.animationManager.make();
         this.playfield.setupEvents();
         this.touchManager.make();
-        this.animationManager.make();
         this.level.make(this.map);
         this.UIManager.make();
 

@@ -69,5 +69,6 @@ class BaseTile {
     waveUpdate(time) {
         this.z = (-0.666 * Math.sin((time * this.wave.speed + this.x * 15 * this.wave.distance) * 0.004) +
             -0.333 * Math.sin((time * this.wave.speed + this.y * 20 * this.wave.distance) * 0.005)) * this.wave.height + this.wave.height;
+        this.sprite.alpha = Math.max(Math.min(1 - this.z / this.wave.height * 0.1, 1), 0) * 0.8;
     }
 }

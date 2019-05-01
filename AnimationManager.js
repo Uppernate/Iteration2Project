@@ -26,7 +26,10 @@ class AnimationManager {
         };
         this.ui = {
             select: new AnimationBlueprint('select', 24, false, 0, {end: 5}),
-            select_move: new AnimationBlueprint('select-move', 24, false, 0, {end: 5})
+            select_move: new AnimationBlueprint('select-move', 24, false, 0)
+        }
+        this.tiles = {
+            water: new AnimationBlueprint('tile-water', 12, false, -1)
         }
     }
     make() {
@@ -43,6 +46,8 @@ class AnimationManager {
         }, this);
         const ui = Object.entries(this.ui);
         ui.forEach(this.onUIAnimMake, this);
+        const tiles = Object.entries(this.tiles);
+        tiles.forEach(this.onTileAnimMake, this);
     }
     onUnitAnimMake(entry) {
         const anim = entry[1];
@@ -58,10 +63,20 @@ class AnimationManager {
         // Create animation for use, save where blueprint was
         this.ui[entry[0]] = game.scene.keys.default.anims.create(anim);
     }
+    onTileAnimMake(entry) {
+        const anim = entry[1];
+        // Generate frame numbers based on spritesheet
+        anim.frames = game.scene.keys.default.anims.generateFrameNumbers(anim.name, anim.frameConfig);
+        // Create animation for use, save where blueprint was
+        this.tiles[entry[0]] = game.scene.keys.default.anims.create(anim);
+    }
     getUnitAnim(unit, anim) {
         return this.units[unit][anim];
     }
     getUIAnim(anim) {
         return this.ui[anim];
+    }
+    getTileAnim(anim) {
+        return this.tiles[anim];
     }
 }

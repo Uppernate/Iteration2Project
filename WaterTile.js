@@ -5,5 +5,6 @@ class WaterTile extends BaseTile {
         this.walkable = false;
         this.selectable = false;
         this.waveSuper();
+        this.sprite.anims.play(game.scene.keys.default.animationManager.getTileAnim('water'));
     }
 }
