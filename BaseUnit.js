@@ -103,7 +103,7 @@ class BaseUnit {
         this.sprite.y = this.position.y + this._z;
     }
     set z(a) {
-        this._z = z;
+        this._z = a;
         this.sprite.depth = depth.get('unit', this.y);
         this.sprite.y = this.position.y + this._z;
     }
