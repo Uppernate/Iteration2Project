@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main Game", "Main Game", "{F2EBDBF2-9BB9-4591-8AD6-B1BCF486F53E}"
 	ProjectSection(SolutionItems) = preProject
-		game.js = game.js
+		Game.js = Game.js
 		index.html = index.html
 	EndProjectSection
 EndProject
@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper Classes", "Helper Cl
 	ProjectSection(SolutionItems) = preProject
 		ArrayFunctions.js = ArrayFunctions.js
 		Counter.js = Counter.js
-		vector.js = vector.js
+		Vector.js = Vector.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base Classes", "Base Classes", "{BEEE9FD1-9A75-4459-9A26-38213EC45FBB}"
