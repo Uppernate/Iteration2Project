@@ -113,7 +113,7 @@ class BaseAction {
             if (!registered)
                 tiles.push(this.original);
             // Get nearest tiles and clone references for them, run the process again
-            const nearby = game.scene.keys.default.playfield.get.tile.around(this.original);
+            const nearby = game.scene.keys.default.playfield.getTilesAround(this.original);
             nearby.forEach(function (tile) {
                 const clone = this.copy(tile);
                 clone.run(this);

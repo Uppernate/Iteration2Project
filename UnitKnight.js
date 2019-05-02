@@ -6,3 +6,5 @@ class UnitKnight extends BaseUnit {
         this.idle(true);
     }
 }
+
+BaseUnit.types['knight'] = UnitKnight;

@@ -1,40 +1,62 @@
 // JavaScript source code
 class BaseUnit {
     constructor() {
+        // Basic values
         this.health = new Counter(0, 1, 1);
         this.stamina = new Counter(0, 5, 5);
         this.position = new Vector2(0, 0);
-        this.name = 'archer';
         this._z = 0;
+        // Sprite identifier
+        this.name = 'archer';
+        // Arrays
         this.actions = [];
         this.buffs = [];
         this.queue = [];
-        this.sprite = game.scene.keys.default.physics.add.sprite(this.position.x, this.position.y, 'unit');
-        this.sprite.depth = depth.get('unit', this.y);
-        this.ghost = game.scene.keys.default.physics.add.sprite(this.position.x, this.position.y, 'unit');
-        this.ghost.depth = depth.get('unit', this.y);
-        this.ghost.alpha = 0.5;
-        this.ghost.setVisible(false);
+        // Visuals
+        this.sprite = game.scene.keys.default.physics.add.sprite(this.position.x, this.position.y, 'unit').setDepth(depth.get('unit', this.y));
+        this.ghost = game.scene.keys.default.physics.add.sprite(this.position.x, this.position.y, 'unit').setDepth(depth.get('unit', this.y));
+        this.ghost.setAlpha(0.5).setVisible(false);
+        // Event listening
         game.scene.keys.default.playfield.event.on('turn-started', this.onTurnStart, this);
         game.scene.keys.default.playfield.event.on('turn-progress', this.onTurnProgress, this);
         game.scene.keys.default.playfield.event.on('turn-finished', this.onTurnFinished, this);
+    }
+    // Code to keep count what unit types exist
+    static types =[];
+    static newType(type) {
+        if (BaseUnit.types[type]) {
+            return new BaseUnit.types[type];
+        }
+        else {
+            return;
+        }
     }
     onTurnStart() {
         //console.log('start');
     }
     onTurnProgress(progress) {
         // Current action that should be playing
-        let action = this.queue.find(a => a.position <= progress && (a.duration + a.position) > progress);
+        let action = this.queue.find( a =>
+            a.position <= progress &&
+            (a.duration + a.position) > progress
+        );
+            // an action was playing and is still being played
         if (this.currentAction && this.currentAction === action) {
             action.progress((progress - action.position) / action.duration);
         }
+            // an action was playing, but it ended 
         else if (this.currentAction) {
+            // Call the end of this action with progress calculation
             this.currentAction.end((progress - this.currentAction.position) / this.currentAction.duration);
+            // Fetch another action after the previous, if there is one
             action = this.queue.find(a => a.position <= progress && (a.duration + a.position) > progress);
+            // Set new fetched, even if undefined
             this.currentAction = action;
+            // If it exists, begin the new action
             if (action)
                 action.begin((progress - action.position) / action.duration);
         }
+            // no action currently playing, but another one is beginning
         else if (action) {
             this.currentAction = action;
             action.begin((progress - action.position) / action.duration);
@@ -61,7 +83,9 @@ class BaseUnit {
         return tile;
     }
     get timeleft() {
+        // Get defined maximum time
         let seconds = game.scene.keys.default.playfield.secondsPerTurn;
+        // Go to the last action queued and get when it ends, subtract from max
         if (this.queue.length > 0) {
             seconds -= this.queue[this.queue.length - 1].position + this.queue[this.queue.length - 1].duration;
         }
@@ -110,7 +134,9 @@ class BaseUnit {
     refreshGhost() {
         // Get the final tile this unit will move to
         const tile = this.futureTile(game.scene.keys.default.playfield.secondsPerTurn);
-        // Only have the ghost appear if tile is different than already standing on
+        // Only have the ghost appear if
+        // This unit is selected
+        // Unit's tile is different than in the future
         if (game.scene.keys.default.UIManager.selectedUnit === this && tile !== this.tile) {
             // Turn visible and position correctly
             this.ghost.setVisible(true);

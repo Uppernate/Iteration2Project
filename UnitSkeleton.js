@@ -6,3 +6,5 @@ class UnitSkeleton extends BaseUnit {
         this.idle(true);
     }
 }
+
+BaseUnit.types['skeleton'] = UnitSkeleton;

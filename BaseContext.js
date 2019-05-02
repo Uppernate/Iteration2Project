@@ -60,17 +60,17 @@ class BaseContext {
             unitHit = 'right';
 
         // Get tile at floored map coordinates
-        let tile = scene.playfield.get.tile.at(tilePos.x, tilePos.y);
+        let tile = scene.playfield.getTileAt(tilePos.x, tilePos.y);
         if (hitunits) {
             let frontTile;
 
             // Swap selected tile to one in front if the unit's invisible hitbox was hit
             if (unitHit && unitHit == 'front')
-                frontTile = scene.playfield.get.tile.at(tilePos.x + 1, tilePos.y + 1);
+                frontTile = scene.playfield.getTileAt(tilePos.x + 1, tilePos.y + 1);
             if (unitHit && unitHit == 'left')
-                frontTile = scene.playfield.get.tile.at(tilePos.x + 1, tilePos.y);
+                frontTile = scene.playfield.getTileAt(tilePos.x + 1, tilePos.y);
             if (unitHit && unitHit == 'right')
-                frontTile = scene.playfield.get.tile.at(tilePos.x, tilePos.y + 1);
+                frontTile = scene.playfield.getTileAt(tilePos.x, tilePos.y + 1);
 
             if (frontTile && frontTile.unit)
                 tile = frontTile;

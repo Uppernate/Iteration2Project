@@ -18,14 +18,14 @@ class LevelMaker {
         if (tile.index == -1) return;
         switch (tile.index) {
             case 5:
-                game.scene.keys.default.playfield.add.water(tile);
+                game.scene.keys.default.playfield.addWater(tile);
                 break;
             default:
-                game.scene.keys.default.playfield.add.tile(tile);
+                game.scene.keys.default.playfield.addTile(tile);
                 break;
         }
     }
     onUnit(unit) {
-        game.scene.keys.default.playfield.add.unit(unit);
+        game.scene.keys.default.playfield.addUnit(unit);
     }
 }
