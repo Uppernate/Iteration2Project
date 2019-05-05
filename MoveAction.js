@@ -1,15 +1,17 @@
 // JavaScript source code
 class MoveAction extends BaseAction {
-    constructor(unit) {
+    constructor(unit, config) {
         super(unit);
+        config = config || {};
         this.icon = 'move';
-        this.range = 3.6; 
-        this.stamina = 0.4;
-        this.duration = 0.1;
-        this.distanceCost = 0.2;
-        this.distanceTime = 0.25;
+        this.range = 3.6 * (config.range || 1); 
+        this.stamina = 0.4 * (config.staminaCost || 1);
+        this.duration = 0.1 * (config.timeCost || 1);
+        this.distanceCost = 0.2 * (config.staminaCost || 1);
+        this.distanceTime = 0.25 * (config.timeCost || 1);
     }
     clicked() {
+        console.log('aaa');
         const tiles = this.selectTilesByMove();
         // TODO: Add stamina/time checks here
         if (tiles.length > 0) {

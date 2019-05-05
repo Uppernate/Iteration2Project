@@ -5,8 +5,8 @@ class UnitArcher extends BaseUnit {
         this.name = 'archer';
         this.idle(true);
         this.actions = [
-            new MoveAction(this),
-            new DashAction(this),
+            new MoveAction(this, {}),
+            new DashAction(this, {}),
             new BaseAction(this)
         ];
     }
