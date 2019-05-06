@@ -7,7 +7,7 @@ class UnitArcher extends BaseUnit {
         this.actions = [
             new MoveAction(this, {}),
             new DashAction(this, {}),
-            new BaseAction(this)
+            new ShootArrowAction(this)
         ];
     }
 }

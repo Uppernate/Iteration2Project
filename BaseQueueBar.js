@@ -15,7 +15,7 @@ class BaseQueueBar {
         this.overlays = [];
     }
     displayPath() {
-        this.path.forEach(function (tile, index) {
+        this.path.forEach(function (tile, i) {
             // Initialise
             const sprite = game.scene.keys.default.add.sprite(0, 0, `select-path-${this.action.icon}`);
             sprite.setVisible(false).setDepth(depth.get('tileOverlay', tile.sprite.y - tile.z));
@@ -23,27 +23,49 @@ class BaseQueueBar {
             sprite.y = tile.sprite.y - 8;
 
             // Determine direction
-            let i = index;
-            if (!this.path[index + 1])
-                i--;
-            const firstTile = this.path[i];
-            const lastTile = this.path[i + 1];
+            let firstTile = this.path[i];
+            let lastTile = this.path[i + 1];
+            if (!lastTile) {
+                lastTile = firstTile;
+                firstTile = this.path[i - 1];
+            }
+            if (!firstTile) {
+                firstTile = this.action.unit.futureTile(this.position);
+            }
             // Calculate difference in positions
-            const direction = lastTile.position.copy().sub(firstTile.position);
+            const direction = lastTile.position.copy().sub(firstTile.position).normalise();
 
-                // If Adjacent
+                // Exactly horizontal or vertical
             if ((Math.abs(direction.x) == 1 && Math.abs(direction.y) == 0) || (Math.abs(direction.x) == 0 && Math.abs(direction.y) == 1)) {
                 sprite.setScale(direction.x || (direction.y * -1), 0 - (direction.x || direction.y));
             }
-                // Horizontal Diagonals
-            else if (Math.abs(direction.x + direction.y) == 0) {
-                sprite.frame = sprite.texture.frames[1];
-                sprite.setScale(direction.x, 1);
+            else if (direction.dot(Vector2.right) >= Math.cos(pi / 8)) {
+                sprite.setScale(1, -1);
             }
-                // Vertical Diagonals
-            else if (Math.abs(direction.x + direction.y) == 2) {
+            else if (direction.dot(Vector2.up) >= Math.cos(pi / 8)) {
+                sprite.setScale(1, 1);
+            }
+            else if (direction.dot(Vector2.left) >= Math.cos(pi / 8)) {
+                sprite.setScale(-1, 1);
+            }
+            else if (direction.dot(Vector2.down) >= Math.cos(pi / 8)) {
+                sprite.setScale(-1, -1);
+            }
+            else if (direction.dot(new Vector2(1,1).normalise()) >= Math.cos(pi / 8)) {
                 sprite.frame = sprite.texture.frames[2];
-                sprite.setScale(1, -direction.y);
+                sprite.setScale(1, -1);
+            }
+            else if (direction.dot(new Vector2(1, -1).normalise()) >= Math.cos(pi / 8)) {
+                sprite.frame = sprite.texture.frames[1];
+                sprite.setScale(1, 1);
+            }
+            else if (direction.dot(new Vector2(-1, 1).normalise()) >= Math.cos(pi / 8)) {
+                sprite.frame = sprite.texture.frames[1];
+                sprite.setScale(-1, 1);
+            }
+            else if (direction.dot(new Vector2(-1, -1).normalise()) >= Math.cos(pi / 8)) {
+                sprite.frame = sprite.texture.frames[2];
+                sprite.setScale(1, 1);
             }
             // Save
             this.overlays.push(sprite);

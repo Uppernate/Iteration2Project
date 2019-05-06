@@ -72,7 +72,7 @@ class BaseUnit {
         let tile = this.tile;
         time = time || game.scene.keys.default.playfield.secondsPerTurn;
         // Stop if bar doesn't exist, or position is greater than time specified
-        while (bar && bar.position <= time) {
+        while (bar && bar.position + bar.duration <= time) {
             // Unit only moves on this property existing
             if (bar.moveTo)
                 tile = bar.moveTo;
@@ -81,6 +81,11 @@ class BaseUnit {
             bar = this.queue[index];
         }
         return tile;
+    }
+    get staminaleft() {
+        let current = this.stamina.value;
+        this.queue.forEach(a => current -= a.stamina);
+        return current;
     }
     get timeleft() {
         // Get defined maximum time
@@ -159,6 +164,7 @@ class BaseUnit {
         const bar = new BaseQueueBar();
         bar.action = action;
         bar.duration = info.time;
+        bar.stamina = info.stamina;
         bar.tile = info.tile;
         bar.path = info.path;
         bar.icon.setTexture(`action-${action.icon}`);

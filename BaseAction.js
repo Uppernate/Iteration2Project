@@ -37,6 +37,9 @@ class BaseAction {
         path.reverse();
         return path;
     }
+    calculateStamina(reference) {
+        return this.stamina + this.distanceCost * reference.distance;
+    }
     calculateTime(reference) {
         return this.duration + this.distanceTime * reference.distance;
     }
@@ -71,7 +74,7 @@ class BaseAction {
         const checked = [];
         const tiles = [];
         // Constants to use in reference functions (this has different meaning in them)
-        const maxStaminaUse = this.unit.stamina.value - this.stamina;
+        const maxStaminaUse = this.unit.staminaleft - this.stamina;
         const maxTimeUse = this.unit.timeleft - this.duration;
         const staminaUse = this.distanceCost;
         const timeUse = this.distanceTime;
@@ -133,6 +136,72 @@ class BaseAction {
             sprite.play(game.scene.keys.default.animationManager.getUIAnim('select_move'));
         }, this);
         */
+
+        this.latestChecked = checked;
+
+        return tiles;
+    }
+    selectTilesBySight() {
+        const tile = this.unit.futureTile();
+        // Create the first reference
+        const reference = new ReferenceTile(tile);
+        // Prevent multiple tiles checked more than once + the resulting array
+        const checked = [];
+        const tiles = [];
+        // Constants to use in reference functions (this has different meaning in them)
+        const maxStaminaUse = this.unit.staminaleft - this.stamina;
+        const maxTimeUse = this.unit.timeleft - this.duration;
+        const staminaUse = this.distanceCost;
+        const timeUse = this.distanceTime;
+        const range = this.range;
+        // Initialisation of references
+        reference.construct = function () {
+            this.distance = tile.position.copy().sub(this.original.position).magnitude;
+            checked.push(this);
+        }
+        // The main behaviour of references, new clones of this copy this behaviour
+        // Depending on the return of this, the reference will either be successful or fail
+        reference.main = function () {
+            const start = tile;
+            const end = this.original;
+            // Get rid of unselectable tiles
+            let result = true;
+            if (!this.original.selectable) {
+                return false;
+            }
+            // Get rid of tiles out of reach
+            if (!((maxStaminaUse - staminaUse * this.distance) > 0 && (maxTimeUse - timeUse * this.distance) > 0 && this.distance <= range)) {
+                return false;
+            }
+            // Calculate gradient
+            const change = end.position.copy().sub(start.position);
+            const max = Math.max(change.x, change.y);
+            change.div(max);
+            // Go through gradient until max met
+            for (let i = 1; i <= max; i++) {
+                const rayTile = game.scene.keys.default.playfield.getTileAt(Math.round(start.position.x + change.x * i), Math.round(start.position.y + change.y * i));
+                if (rayTile && rayTile.blocksSight) {
+                    result = false;
+                    break;
+                }
+            }
+            return result;
+        }
+        // When the check has been successful, this is executed
+        reference.success = function () {
+            // Add tile if only it isn't added already
+            const registered = tiles.find(a => a === this.original, this);
+            if (!registered)
+                tiles.push(this.original);
+        }
+        // Do nothing on fail
+        reference.fail = function () { };
+        game.scene.keys.default.playfield.tiles.forEach(function (t) {
+            reference.copy(t).run();
+        }, this);
+        // Remove the tile unit is standing on
+        tiles.splice(tiles.findIndex(a => a === this.unit.futureTile(), this), 1);
+        // Display a temporary graphic over the selected tile for debugging
 
         this.latestChecked = checked;
 
