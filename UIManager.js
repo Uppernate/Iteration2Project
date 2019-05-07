@@ -159,6 +159,13 @@ class UIManager {
         icon.depth = depth.get('uiIcon', 0);
         this.units.push({ unit: unit, icon: icon });
     }
+    removeUnit(unit) {
+        const i = this.units.findIndex(a => a.unit === unit);
+        if (i >= 0) {
+            this.units[i].icon.destroy();
+            this.units.splice(i, 1);
+        }
+    }
     tabClicked() {
         const tab = this.tab;
         const action = this.action;

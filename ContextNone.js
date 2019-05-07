@@ -5,6 +5,7 @@ class ContextNone extends BaseContext {
         this.listen('press', this.press, this);
         this.listen('swiping', this.swiping, this);
         this.listen('swipestart', this.swipestart, this);
+        this.listen('swipe', this.swipeEnd, this);
         this.storage = game.scene.keys.default.touchManager.storage;
 
         this.selectedUnit = game.scene.keys.default.UIManager.selectedUnit;
@@ -55,6 +56,11 @@ class ContextNone extends BaseContext {
             pos.sub(bar.bar);
             pos.div((game.scene.keys.default.UIManager.barSize.x - 8) / game.scene.keys.default.playfield.secondsPerTurn, 1);
             bar.move(pos.x, pos.y);
+        }
+    }
+    swipeEnd(touch) {
+        if (touch.drag && this.storage.drag && this.storage.drag.type == 'queue') {
+            this.storage.drag = undefined;
         }
     }
 }

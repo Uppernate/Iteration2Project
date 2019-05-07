@@ -25,14 +25,23 @@ class BaseQueueBar {
             sprite.y = tile.sprite.y - 8;
 
             // Determine direction
-            let firstTile = this.path[i];
-            let lastTile = this.path[i + 1];
-            if (!lastTile) {
-                lastTile = firstTile;
-                firstTile = this.path[i - 1];
+            let firstTile;
+            let lastTile;
+
+            if (this.pathType === 'sequence') {
+                firstTile = this.path[i];
+                lastTile = this.path[i + 1];
+                if (!lastTile) {
+                    lastTile = firstTile;
+                    firstTile = this.path[i - 1];
+                }
+                if (!firstTile) {
+                    firstTile = this.action.unit.futureTile(this.position);
+                }
             }
-            if (!firstTile) {
+            else if (this.pathType === 'fromUnit') {
                 firstTile = this.action.unit.futureTile(this.position);
+                lastTile = this.path[i];
             }
             // Calculate difference in positions
             const direction = lastTile.position.copy().sub(firstTile.position).normalise();

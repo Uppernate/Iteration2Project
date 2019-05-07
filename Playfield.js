@@ -121,6 +121,7 @@ class Playfield {
                 else {
                     unit.turnsIdle++;
                 }
+                unit.health.clearDifference();
             }, this);
             this.event.emit('turn-started');
         }

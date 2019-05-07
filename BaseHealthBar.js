@@ -40,4 +40,10 @@ class BaseHealthBar extends Counter {
         this.change.y = this.fill.y;
         this.change.setScale(this.difference / this.max, 1);
     }
+    destroy() {
+        this.bg.destroy();
+        this.fill.destroy();
+        this.change.destroy();
+        game.scene.keys.default.event.off('update', this.update, this);
+    }
 }

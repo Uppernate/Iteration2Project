@@ -169,7 +169,16 @@ class BaseUnit {
         this.destroy();
     }
     destroy() {
-
+        this.health.destroy();
+        this.stamina.destroy();
+        this.sprite.destroy();
+        this.ghost.destroy();
+        game.scene.keys.default.playfield.event.off('turn-started', this.onTurnStart, this);
+        game.scene.keys.default.playfield.event.off('turn-progress', this.onTurnProgress, this);
+        game.scene.keys.default.playfield.event.off('turn-finished', this.onTurnFinished, this);
+        game.scene.keys.default.playfield.units.splice(game.scene.keys.default.playfield.units.findIndex(a => a === this, this), 1);
+        this.tile.unit = undefined;
+        game.scene.keys.default.UIManager.removeUnit(this);
     }
     addActionToQueue(action, info) {
         const bar = new BaseQueueBar();
@@ -180,6 +189,7 @@ class BaseUnit {
         bar.path = info.path;
         bar.damage = info.damage;
         bar.reference = info.reference;
+        bar.pathType = info.pathType;
         bar.icon.setTexture(`action-${action.icon}`);
         bar.bar.setTint(action.colour);
 
