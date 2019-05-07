@@ -63,6 +63,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actions", "Actions", "{85B2
 		DashAction.js = DashAction.js
 		MoveAction.js = MoveAction.js
 		ShootArrowAction.js = ShootArrowAction.js
+		StabAction.js = StabAction.js
+		SwingSwordAction.js = SwingSwordAction.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bars", "Bars", "{9CB94485-519F-4E05-A80A-A7C0209594B9}"

@@ -22,6 +22,7 @@ class BaseUnit {
         game.scene.keys.default.playfield.event.on('turn-started', this.onTurnStart, this);
         game.scene.keys.default.playfield.event.on('turn-progress', this.onTurnProgress, this);
         game.scene.keys.default.playfield.event.on('turn-finished', this.onTurnFinished, this);
+        this.dead = false;
     }
     // Code to keep count what unit types exist
     static types =[];
@@ -37,6 +38,8 @@ class BaseUnit {
         //console.log('start');
     }
     onTurnProgress(progress) {
+        if (this.dead)
+            return;
         // Current action that should be playing
         let action = this.queue.find( a =>
             a.position <= progress &&
@@ -179,6 +182,7 @@ class BaseUnit {
         game.scene.keys.default.playfield.units.splice(game.scene.keys.default.playfield.units.findIndex(a => a === this, this), 1);
         this.tile.unit = undefined;
         game.scene.keys.default.UIManager.removeUnit(this);
+        this.dead = true;
     }
     addActionToQueue(action, info) {
         const bar = new BaseQueueBar();

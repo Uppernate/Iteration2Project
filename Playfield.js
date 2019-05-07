@@ -32,9 +32,9 @@ class Playfield {
         if (playUnit) {
             // Set team and add into UI if Unit is for player to order
             playUnit.team = team.value;
-            if (team && team.value === 'player') {
+            //if (team && team.value === 'player') {
                 game.scene.keys.default.UIManager.addUnit(playUnit);
-            }
+            //}
             // Positioning
             playUnit.x = unit.x - unit.y;
             playUnit.y = unit.y / 2 + unit.x / 2 - 2;
