@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base Classes", "Base Classe
 		BaseAction.js = BaseAction.js
 		BaseActionUI.js = BaseActionUI.js
 		BaseContext.js = BaseContext.js
+		BaseHealthBar.js = BaseHealthBar.js
 		BaseQueueBar.js = BaseQueueBar.js
 		BaseScene.js = BaseScene.js
 		BaseTile.js = BaseTile.js
@@ -62,6 +63,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actions", "Actions", "{85B2
 		DashAction.js = DashAction.js
 		MoveAction.js = MoveAction.js
 		ShootArrowAction.js = ShootArrowAction.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bars", "Bars", "{9CB94485-519F-4E05-A80A-A7C0209594B9}"
+	ProjectSection(SolutionItems) = preProject
+		BarStamina.js = BarStamina.js
 	EndProjectSection
 EndProject
 Global
