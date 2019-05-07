@@ -4,6 +4,7 @@ class MoveAction extends BaseAction {
         super(unit);
         config = config || {};
         this.icon = 'move';
+        this.selectType = 'move';
         this.range = 3.6 * (config.range || 1); 
         this.stamina = 0.4 * (config.staminaCost || 1);
         this.duration = 0.1 * (config.timeCost || 1);
@@ -15,7 +16,7 @@ class MoveAction extends BaseAction {
             const tiles = this.selectTilesByMove();
             // TODO: Add stamina/time checks here
             if (tiles.length > 0) {
-                this.switchContextAndPass('select-tiles', { tiles: tiles });
+                this.switchContextAndPass('select-tiles', { tiles: tiles, select: this.selectType });
                 this.defaultListen();
             }
         }
@@ -46,6 +47,8 @@ class MoveAction extends BaseAction {
         // TODO: Start animations, etc.
         // Get measurements for how long one tile should take in time
         bar.tDuration = 1 / (bar.path.length - 1);
+        this.unit.stamina.value -= this.stamina;
+        bar.stamina -= this.stamina;
     }
     progress(bar, progress) {
         if (!bar.stopped) {
@@ -73,6 +76,8 @@ class MoveAction extends BaseAction {
                 bar.fromTile = tiles.next;
                 bar.lastTile = tiles.current;
                 bar.fromPosition = this.unit.position.copy();
+                this.unit.stamina.value -= progress * this.distanceCost * bar.reference.distance;
+                bar.stamina = 0;
                 //this.unit.clearQueue();
             }
             // Move if it isn't
@@ -92,6 +97,10 @@ class MoveAction extends BaseAction {
     end(bar) {
         if (bar.stopped) {
             this.unit.clearQueue();
+        }
+        else {
+            this.unit.stamina.value -= this.distanceCost * bar.reference.distance;
+            bar.stamina = 0;
         }
     }
 }

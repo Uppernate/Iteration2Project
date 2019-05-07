@@ -6,7 +6,7 @@ class UnitKnight extends BaseUnit {
         this.idle(true);
         this.actions = [
             new MoveAction(this, {staminaCost: 1.1, timeCost: 1.3, range: 0.8}),
-            new DashAction(this, {staminaCost: 1.4, timeCost: 1.3}),
+            new DashAction(this, {staminaCost: 1.2, timeCost: 1.3}),
             new BaseAction(this)
         ];
     }

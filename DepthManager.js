@@ -6,6 +6,7 @@ class DepthManager {
             tile: 0,
             tileOverlay: 42,
             unit: 64,
+            health: 8000,
             ui: 10000,
             uiIcon: 12000,
             uiAction: 11000,

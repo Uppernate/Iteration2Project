@@ -5,6 +5,7 @@ class ContextNone extends BaseContext {
         this.listen('press', this.press, this);
         this.listen('swiping', this.swiping, this);
         this.listen('swipestart', this.swipestart, this);
+        this.storage = game.scene.keys.default.touchManager.storage;
 
         this.selectedUnit = game.scene.keys.default.UIManager.selectedUnit;
         if (this.selectedUnit)
@@ -40,9 +41,20 @@ class ContextNone extends BaseContext {
         if (pos.y < game.scene.keys.default.UIManager.barPosition.y - game.scene.keys.default.camerafocus.y) {
             touch.valid = true;
         }
+        else if (this.storage.drag) {
+            touch.drag = true;
+        }
     }
     swiping(touch) {
         if (touch.valid) 
             this.moveScreen(touch);
+        else if (touch.drag && this.storage.drag && this.storage.drag.type == 'queue') {
+            const pos = this.getScreenPositionByTouch(touch);
+            const bar = this.storage.drag.object;
+            pos.sub(this.storage.drag.offset);
+            pos.sub(bar.bar);
+            pos.div((game.scene.keys.default.UIManager.barSize.x - 8) / game.scene.keys.default.playfield.secondsPerTurn, 1);
+            bar.move(pos.x, pos.y);
+        }
     }
 }

@@ -29,6 +29,7 @@ class Scene extends Phaser.Scene {
         this.load.spritesheet("unit", "img/unit.png", { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("select", "img/select.png", { frameWidth: 30, frameHeight: 16 });
         this.load.spritesheet("select-move", "img/select-move.png", { frameWidth: 30, frameHeight: 16 });
+        this.load.spritesheet("select-attack", "img/select-attack.png", { frameWidth: 30, frameHeight: 16 });
 
         this.load.spritesheet("select-path-move", "img/select-path-move.png", { frameWidth: 30, frameHeight: 16 });
         this.load.spritesheet("select-path-dash", "img/select-path-dash.png", { frameWidth: 30, frameHeight: 16 });
@@ -52,6 +53,9 @@ class Scene extends Phaser.Scene {
 
         this.load.image("queue-action", "img/queue-action.png");
         this.load.image("queue-action-bg", "img/queue-action-cover.png");
+
+        this.load.image("health-bg", "img/health-bg.png");
+        this.load.image("health-fill", "img/health-fill.png");
 
         this.load.image("play", "img/play.png");
     }

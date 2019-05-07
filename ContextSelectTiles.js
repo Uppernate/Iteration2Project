@@ -24,9 +24,9 @@ class ContextSelectTiles extends BaseContext {
         }, this);
 
         this.storage.tiles.forEach(function (tile) {
-            const sprite = game.scene.keys.default.physics.add.sprite(tile.sprite.x, tile.sprite.y - 8, 'select-move');
+            const sprite = game.scene.keys.default.physics.add.sprite(tile.sprite.x, tile.sprite.y - 8, `select-${this.storage.select}`);
             sprite.depth = depth.get('tileOverlay', sprite.y);
-            sprite.play(game.scene.keys.default.animationManager.getUIAnim('select_move'));
+            sprite.play(game.scene.keys.default.animationManager.getUIAnim(`select_${this.storage.select}`));
             sprite.tile = tile;
             this.selects.push(sprite);
             tile.sprite.setTint(0xFFFFFF);

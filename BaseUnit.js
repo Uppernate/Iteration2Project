@@ -2,9 +2,11 @@
 class BaseUnit {
     constructor() {
         // Basic values
-        this.health = new Counter(0, 1, 1);
-        this.stamina = new Counter(0, 5, 5);
+        this.health = new BaseHealthBar(6, this);
+        this.stamina = new StaminaBar(5, this);
         this.position = new Vector2(0, 0);
+        this.staminaRegen = { fixed: 0.5, percentMax: 0.025, percentMissing: 0.025, percentIdle: 0.6 };
+        this.turnsIdle = 0;
         this._z = 0;
         // Sprite identifier
         this.name = 'archer';
@@ -154,10 +156,19 @@ class BaseUnit {
             this.ghost.setVisible(false);
         }
     }
-    damage() {
-
+    damage(amount) {
+        console.log(`unit damaged: ${amount}`);
+        this.health.value -= amount;
+        if (this.health.value == 0) {
+            this.clearQueue();
+            this.destroy();
+        }
     }
     death() {
+        // Currently nothing that can stop death
+        this.destroy();
+    }
+    destroy() {
 
     }
     addActionToQueue(action, info) {
@@ -167,6 +178,8 @@ class BaseUnit {
         bar.stamina = info.stamina;
         bar.tile = info.tile;
         bar.path = info.path;
+        bar.damage = info.damage;
+        bar.reference = info.reference;
         bar.icon.setTexture(`action-${action.icon}`);
         bar.bar.setTint(action.colour);
 

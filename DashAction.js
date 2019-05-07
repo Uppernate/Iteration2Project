@@ -4,6 +4,7 @@ class DashAction extends BaseAction {
         super(unit);
         config = config || {};
         this.icon = 'dash';
+        this.selectType = 'move';
         this.range = 1.6 * (config.range || 1);
         this.stamina = 0.5 * (config.staminaCost || 1);
         this.duration = 0.05 * (config.timeCost || 1);
@@ -11,12 +12,11 @@ class DashAction extends BaseAction {
         this.distanceTime = 0.13 * (config.timeCost || 1);
     }
     clicked() {
-        console.log(this.unit.staminaleft, this.stamina);
         if (this.unit.staminaleft >= this.stamina) {
             const tiles = this.selectTilesByMove();
             // TODO: Add stamina/time checks here
             if (tiles.length > 0) {
-                this.switchContextAndPass('select-tiles', { tiles: tiles });
+                this.switchContextAndPass('select-tiles', { tiles: tiles, select: this.selectType });
                 this.defaultListen();
             }
         }
@@ -47,6 +47,8 @@ class DashAction extends BaseAction {
         // TODO: Start animations, etc.
         // Get measurements for how long one tile should take in time
         bar.tDuration = 1 / (bar.path.length - 1);
+        this.unit.stamina.value -= this.stamina;
+        bar.stamina -= this.stamina;
     }
     progress(bar, progress) {
         if (!bar.stopped) {
@@ -67,6 +69,7 @@ class DashAction extends BaseAction {
                 bar.lastOffset = progress;
                 bar.fromTile = tiles.next;
                 bar.lastTile = tiles.current;
+                this.unit.stamina.value -= progress * this.distanceCost * bar.reference.distance;
                 bar.fromPosition = this.unit.position.copy();
                 //this.unit.clearQueue();
             }
@@ -87,6 +90,10 @@ class DashAction extends BaseAction {
     end(bar) {
         if (bar.stopped) {
             this.unit.clearQueue();
+        }
+        else {
+            this.unit.stamina.value -= this.distanceCost * bar.reference.distance;
+            bar.stamina = 0;
         }
     }
 }

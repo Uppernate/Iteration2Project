@@ -114,11 +114,25 @@ class Playfield {
             game.scene.keys.default.UIManager.hideActions();
             game.scene.keys.default.UIManager.selectedUnit = undefined;
             game.scene.keys.default.touchManager.switchState('advancing', {});
+            this.units.forEach(function (unit) {
+                if (unit.queue.length > 0) {
+                    unit.turnsIdle = 0;
+                }
+                else {
+                    unit.turnsIdle++;
+                }
+            }, this);
             this.event.emit('turn-started');
         }
     }
     finishTurn() {
         game.scene.keys.default.touchManager.switchState('none', {});
         this.event.emit('turn-finished');
+        this.units.forEach(function (unit) {
+            unit.stamina.value += unit.staminaRegen.fixed +
+                                    unit.stamina.max * unit.staminaRegen.percentMax +
+                                    (unit.stamina.max - unit.stamina.value) * unit.staminaRegen.percentMissing +
+                                    unit.turnsIdle * unit.staminaRegen.percentIdle;
+        }, this);
     }
 }
