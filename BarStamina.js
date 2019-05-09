@@ -18,6 +18,9 @@ class StaminaBar extends BaseHealthBar {
         super.update();
         this.fill.y = this.bg.y;
         this.change.y = this.fill.y;
+        if (this.unit.team == 'enemy') {
+            this.change.setVisible(false);
+        }
         const used = this.value - this.unit.staminaleft;
         this.change.setScale(used / this.max, 1);
 

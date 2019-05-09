@@ -30,10 +30,13 @@ class Scene extends Phaser.Scene {
         this.load.spritesheet("select", "img/select.png", { frameWidth: 30, frameHeight: 16 });
         this.load.spritesheet("select-move", "img/select-move.png", { frameWidth: 30, frameHeight: 16 });
         this.load.spritesheet("select-attack", "img/select-attack.png", { frameWidth: 30, frameHeight: 16 });
+        this.load.spritesheet("select-stab", "img/select-attack.png", { frameWidth: 30, frameHeight: 16 });
 
         this.load.spritesheet("select-path-move", "img/select-path-move.png", { frameWidth: 30, frameHeight: 16 });
         this.load.spritesheet("select-path-dash", "img/select-path-dash.png", { frameWidth: 30, frameHeight: 16 });
         this.load.spritesheet("select-path-arrowshoot", "img/select-path-shoot-arrow.png", { frameWidth: 30, frameHeight: 16 });
+        this.load.spritesheet("select-path-swing-sword", "img/select-path-swing-sword.png", { frameWidth: 30, frameHeight: 16 });
+        this.load.spritesheet("select-path-stab", "img/select-path-swing-sword.png", { frameWidth: 30, frameHeight: 16 });
 
         this.load.spritesheet("unit-archer-idle", "img/unit-archer-idle.png", { frameWidth: 32, frameHeight: 32 });
         this.load.image("unit-archer-icon", "img/unit-archer-icon.png");
@@ -50,6 +53,8 @@ class Scene extends Phaser.Scene {
         this.load.image("action-move", "img/action-move.png");
         this.load.image("action-dash", "img/action-dash.png");
         this.load.image("action-arrowshoot", "img/action-arrowshoot.png");
+        this.load.image("action-swing-sword", "img/action-swing-sword.png");
+        this.load.image("action-stab", "img/action-stab.png");
 
         this.load.image("queue-action", "img/queue-action.png");
         this.load.image("queue-action-bg", "img/queue-action-cover.png");

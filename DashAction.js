@@ -14,7 +14,6 @@ class DashAction extends BaseAction {
     clicked() {
         if (this.unit.staminaleft >= this.stamina) {
             const tiles = this.selectTilesByMove();
-            // TODO: Add stamina/time checks here
             if (tiles.length > 0) {
                 this.switchContextAndPass('select-tiles', { tiles: tiles, select: this.selectType });
                 this.defaultListen();
@@ -33,6 +32,7 @@ class DashAction extends BaseAction {
         queue.path = this.getPath(queue.reference);
         queue.time = this.calculateTime(queue.reference);
         queue.stamina = this.calculateStamina(queue.reference);
+        queue.pathType = 'sequence';
         const bar = this.unit.addActionToQueue(this, queue);
         bar.displayPath();
         // Playfield Management

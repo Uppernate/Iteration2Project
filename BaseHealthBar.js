@@ -48,4 +48,10 @@ class BaseHealthBar extends Counter {
             this.old_change_scale = this.difference;
         }
     }
+    destroy() {
+        this.bg.destroy();
+        this.fill.destroy();
+        this.change.destroy();
+        game.scene.keys.default.event.off('update', this.update, this);
+    }
 }
