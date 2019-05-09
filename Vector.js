@@ -285,6 +285,30 @@ class Vector2 {
         }
         return this;
     }
+    equals(o1, o2) {
+        if (exists(o1)) {
+            if (exists(o2)) {
+                return this.x === o1 && this.y === o2;
+            }
+            else {
+                if (o1 instanceof Vector2) {
+                    return this.x === o1.x && this.y === o1.y;
+                }
+                else if (exists(o1.x) && exists(o1.y)) {
+                    return this.x === o1.x && this.y === o1.y;
+                }
+                else if (typeof o1 === "number") {
+                    this.x = o1;
+                    this.y = o1;
+                    return this.x === o1 && this.y === o1;
+                }
+                else {
+                    throw "Vector equals was not understood/given incorrect parameters.";
+                }
+            }
+        }
+        return this;
+    }
     set x(x) {
         this.rawx = x;
         (this.y);

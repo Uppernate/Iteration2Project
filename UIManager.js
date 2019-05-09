@@ -32,6 +32,11 @@ class UIManager {
         this.barSize = this.windowsize.copy().mul(0.75, 0.22);
         this.barPosition = this.camerafocus.copy().add(this.windowsize.copy().mul(0.5)).sub(this.barSize);
         this.iconPosition = this.camerafocus.copy();
+        this.sizes = {
+            window: new Vector2(100, 100),
+            unit: new Vector2(100, 100),
+            queue: new Vector2(100, 100)
+        }
     }
     playPressed() {
         game.scene.keys.default.playfield.startTurn();
@@ -100,10 +105,19 @@ class UIManager {
             .add(pos) // Adding middle of the screen
             .add(-this.windowhalf.x, this.windowhalf.y) // Attaching to bottom left corner
 
-        // This is how you change the size of Nine Sliced objetcs
-        this.window.resize(this.barSize.x, this.barSize.y);
-        this.unitWindow.resize(this.windowsize.x - this.barSize.x, this.barSize.y);
-        this.queueWindow.resize(this.barSize.x - 8, 20);
+        // This is how you change the size of Nine Sliced objects
+        if (!this.sizes.window.equals(this.barSize)) {
+            this.window.resize(this.barSize.x, this.barSize.y);
+            this.sizes.window.set(this.barSize);
+        }
+        if (!this.sizes.unit.equals(this.windowsize.x - this.barSize.x, this.barSize.y)) {
+            this.unitWindow.resize(this.windowsize.x - this.barSize.x, this.barSize.y);
+            this.sizes.unit.set(this.windowsize.x - this.barSize.x, this.barSize.y);
+        }
+        if (!this.sizes.queue.equals(this.barSize.x - 8, 20)) {
+            this.queueWindow.resize(this.barSize.x - 8, 20);
+            this.sizes.queue.set(this.barSize.x - 8, 20);
+        }
 
         // Note: The top left is the origin of nine sliced objects
         this.window.x = this.barPosition.x;

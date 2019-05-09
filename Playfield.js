@@ -97,23 +97,32 @@ class Playfield {
         }, this);
     }
     update(time, frame) {
+        // Only when turn is progressing
         if (this.progressing) {
+            // Announce to everything about this
             this.event.emit('turn-progress', this.turnProgress);
+                // Progress reached more than maximum, end
             if (this.turnProgress >= this.secondsPerTurn) {
                 this.progressing = false;
                 this.turnProgress = 0;
                 this.finishTurn();
             }
-            this.turnProgress += this.turnSpeed * 0.001 * frame;
-            this.turnProgress = Math.min(this.turnProgress, this.secondsPerTurn);
+                // Advance progress
+            else {
+                this.turnProgress += this.turnSpeed * 0.001 * frame;
+                this.turnProgress = Math.min(this.turnProgress, this.secondsPerTurn);
+            }
         }
     }
     startTurn() {
         if (!this.progressing) {
+            // Determine turn as progressing
             this.progressing = true; // Turn started, trust me
+            // Deselect and hide UI, just so player doesn't press anything during play
             game.scene.keys.default.UIManager.hideActions();
             game.scene.keys.default.UIManager.selectedUnit = undefined;
             game.scene.keys.default.touchManager.switchState('advancing', {});
+            // Increment units' turnsIdle properties if they're doing nothing this turn, multiplies stamina regen
             this.units.forEach(function (unit) {
                 if (unit.queue.length > 0) {
                     unit.turnsIdle = 0;
@@ -122,17 +131,22 @@ class Playfield {
                     unit.turnsIdle++;
                 }
             }, this);
+            // Emit event for every relevant thing to see
             this.event.emit('turn-started');
         }
     }
     finishTurn() {
+        // Enable touch input again
         game.scene.keys.default.touchManager.switchState('none', {});
-        this.event.emit('turn-finished');
+        // Regain units' stamina
+        // TODO: Insert into Unit class, this doesn't belong here
         this.units.forEach(function (unit) {
             unit.stamina.value += unit.staminaRegen.fixed +
                                     unit.stamina.max * unit.staminaRegen.percentMax +
                                     (unit.stamina.max - unit.stamina.value) * unit.staminaRegen.percentMissing +
                                     unit.turnsIdle * unit.staminaRegen.percentIdle;
         }, this);
+        // Let everything else know turn has finished
+        this.event.emit('turn-finished');
     }
 }

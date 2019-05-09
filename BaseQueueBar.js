@@ -121,10 +121,11 @@ class BaseQueueBar {
         this.icon.y = this.bg.y;
     }
     resize(a) {
-        this.bar.resize(a, 16);
-        this.bg.x = this.bar.x + this.bar.width / 2;
-        this.icon.x = this.bg.x;
-        if (this.length !== a) {
+        if (a !== this.length) {
+            console.log('changed size');
+            this.bar.resize(a, 16);
+            this.bg.x = this.bar.x + this.bar.width / 2;
+            this.icon.x = this.bg.x;
             this.bar.removeInteractive();
             this.bar.setInteractive(new Phaser.Geom.Rectangle(this.bar.x, this.bar.y, a, this.bar.height), Phaser.Geom.Rectangle.Contains);
             this.length = a;
