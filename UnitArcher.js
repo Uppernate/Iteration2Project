@@ -12,4 +12,4 @@ class UnitArcher extends BaseUnit {
     }
 }
 
-BaseUnit.types['archer'] = UnitArcher;
+UNIT_TYPES['archer'] = UnitArcher;

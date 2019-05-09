@@ -12,4 +12,4 @@ class UnitSkeleton extends BaseUnit {
     }
 }
 
-BaseUnit.types['skeleton'] = UnitSkeleton;
+UNIT_TYPES['skeleton'] = UnitSkeleton;

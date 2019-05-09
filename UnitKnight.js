@@ -12,4 +12,4 @@ class UnitKnight extends BaseUnit {
     }
 }
 
-BaseUnit.types['knight'] = UnitKnight;
+UNIT_TYPES['knight'] = UnitKnight;

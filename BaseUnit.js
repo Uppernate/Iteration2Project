@@ -1,4 +1,6 @@
 // JavaScript source code
+const UNIT_TYPES = [];
+
 class BaseUnit {
     constructor() {
         // Basic values
@@ -25,10 +27,9 @@ class BaseUnit {
         this.dead = false;
     }
     // Code to keep count what unit types exist
-    static types =[];
     static newType(type) {
-        if (BaseUnit.types[type]) {
-            return new BaseUnit.types[type];
+        if (UNIT_TYPES[type]) {
+            return new UNIT_TYPES[type];
         }
         else {
             return;
