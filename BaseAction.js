@@ -179,7 +179,9 @@ class BaseAction {
             change.div(max);
             // Go through gradient until max met
             for (let i = 1; i <= max; i++) {
-                const rayTile = game.scene.keys.default.playfield.getTileAt(Math.round(start.position.x + change.x * i), Math.round(start.position.y + change.y * i));
+                const rayTile = game.scene.keys.default.playfield.getTileAt(
+                    Math.round(start.position.x + change.x * i),
+                    Math.round(start.position.y + change.y * i));
                 if (rayTile && rayTile.blocksSight) {
                     result = false;
                     break;

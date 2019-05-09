@@ -18,9 +18,11 @@ class StaminaBar extends BaseHealthBar {
         super.update();
         this.fill.y = this.bg.y;
         this.change.y = this.fill.y;
+        // Stamina use for enemies turns invisible, just so testers can't see if I moved with units while I play as AI
         if (this.unit.team == 'enemy') {
             this.change.setVisible(false);
         }
+        // Determine stamina use by unit's already implemented stamina left
         const used = this.value - this.unit.staminaleft;
         this.change.setScale(used / this.max, 1);
 

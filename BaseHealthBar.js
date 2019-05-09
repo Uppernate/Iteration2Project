@@ -2,6 +2,7 @@
 class BaseHealthBar extends Counter {
     constructor(health, unit) {
         super(0, health, health);
+        // Create sprites, background, fill and change amount
         this.bg = game.scene.keys.default.add.sprite(0, 0, 'health-bg')
             .setDepth(depth.get('health', 1));
         this.fill = game.scene.keys.default.add.sprite(0, 0, 'health-fill')
@@ -11,10 +12,15 @@ class BaseHealthBar extends Counter {
         this.change = game.scene.keys.default.add.sprite(0, 0, 'health-fill')
             .setDepth(depth.get('health', 10))
             .setOrigin(0, 0);
+        // Determining how large change part should be
         this.difference = 0;
+        // Reference for positioning
         this.unit = unit;
+        // Y coordinate offset for stamina bars, etc.
         this.offset = 0;
+        // Listen to the update event
         game.scene.keys.default.event.on('update', this.update, this);
+        // Keep old scales and compare to stop resizing every update
         this.old_scale;
         this.old_change_scale;
     }
@@ -33,22 +39,23 @@ class BaseHealthBar extends Counter {
         this.difference = 0;
     }
     update() {
-        this.bg.x = this.unit.position.x;
-        this.bg.y = this.unit.position.y - 16 + this.offset;
-        this.fill.x = this.bg.x - 4;
-        this.fill.y = this.bg.y - 1;
+        // Set correct positioning
+        this.bg.setPosition(this.unit.position.x, this.unit.position.y - 16 + this.offset);
+        this.fill.setPosition(this.bg.x - 4, this.bg.y - 1);
+        // Determine the fill scale, only change if it is different
         if (this.old_scale !== this.value) {
             this.fill.setScale(this.value / this.max, 1);
             this.old_scale = this.value;
         }
-        this.change.x = this.fill.x + this.fill.width * this.value / this.max;
-        this.change.y = this.fill.y;
+        this.change.setPosition(this.fill.x + this.fill.width * this.value / this.max, this.fill.y);
+        // Determine the change scale, only change if it is different
         if (this.old_change_scale !== this.difference) {
             this.change.setScale(this.difference / this.max, 1);
             this.old_change_scale = this.difference;
         }
     }
     destroy() {
+        // Kill off sprites Phaser's way, stop listening
         this.bg.destroy();
         this.fill.destroy();
         this.change.destroy();

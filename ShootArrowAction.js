@@ -51,11 +51,15 @@ class ShootArrowAction extends BaseAction {
     }
     progress(bar, progress) {
         if (progress >= 0.5 && !bar.shot) {
+            // Don't shoot multiple times
             bar.shot = true;
+            // Get tile to hit
             const tileHit = bar.path[0];
+            // Hit unit if it's on that tile
             if (tileHit && tileHit.unit) {
                 tileHit.unit.damage(bar.damage);
             }
+            // Remove stamina from the unit and the change bar
             this.unit.stamina.value -= this.stamina;
             bar.stamina -= this.stamina;
         }
